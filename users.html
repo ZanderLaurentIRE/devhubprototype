@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin - User Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>BOLDTRAIL</span>
+            </div>
+            <div class="breadcrumb">
+                <span>Super Admin</span>
+                <i class="fas fa-chevron-right"></i>
+                <span>Fancy Greeting</span>
+                <span class="system-access-badge">System Access</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                <i class="fas fa-history"></i>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-shield-alt"></i>
+                <div class="user-details">
+                    <span>Super Admin</span>
+                    <span>Super Admin</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span>BOLDTRAIL</span>
+            <div class="super-admin">SUPER ADMIN</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>APPROVALS</h3>
+                <ul>
+                    <li><i class="fas fa-file-alt"></i> <a href="partners.html">Partners</a> <span class="notification-badge">2</span></li>
+                    <li><i class="fas fa-briefcase"></i> MCP Integrations</li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>USER MANAGEMENT</h3>
+                <ul>
+                    <li><i class="fas fa-user"></i> <a href="users.html">Users</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>API MANAGEMENT</h3>
+                <ul>
+                    <li><i class="fas fa-key"></i> <a href="index.html">API Keys</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>User Management</h1>
+            <p>Manage all users across organizations</p>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search users by name, email, or organization...">
+            </div>
+            <div class="filter-dropdown">
+                <i class="fas fa-filter"></i>
+                <select>
+                    <option>All Users</option>
+                    <option>Super Admins</option>
+                    <option>Partners</option>
+                    <option>BoldTrail Users</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>USER</th>
+                        <th>TYPE</th>
+                        <th>ORGANIZATION</th>
+                        <th>STATUS</th>
+                        <th>LAST LOGIN</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Nate Divine</div>
+                                    <div class="user-email">ndevine@weresrealestate.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge super-admin">Super Admin</span>
+                        </td>
+                        <td>
+                            <div class="organization-info">
+                                <i class="fas fa-building"></i>
+                                <span>We're Real Estate</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge active">
+                                <i class="fas fa-user"></i>
+                                active
+                            </span>
+                        </td>
+                        <td>Jan 15, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon" title="More options">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">John Smith</div>
+                                    <div class="user-email">john@fancygreeting.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge partner">Partner</span>
+                        </td>
+                        <td>
+                            <div class="organization-info">
+                                <i class="fas fa-building"></i>
+                                <span>Fancy Greeting</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge active">
+                                <i class="fas fa-user"></i>
+                                active
+                            </span>
+                        </td>
+                        <td>Jan 14, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon" title="More options">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Sarah Johnson</div>
+                                    <div class="user-email">sarah@boldtrail.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge boldtrail">BoldTrail User</span>
+                        </td>
+                        <td>
+                            <div class="organization-info">
+                                <i class="fas fa-building"></i>
+                                <span>BoldTrail Development</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge active">
+                                <i class="fas fa-user"></i>
+                                active
+                            </span>
+                        </td>
+                        <td>Jan 15, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon" title="More options">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Mike Brown</div>
+                                    <div class="user-email">mike@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge partner">Partner</span>
+                        </td>
+                        <td>
+                            <div class="organization-info">
+                                <i class="fas fa-building"></i>
+                                <span>Tech Solutions Inc</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge inactive">
+                                <i class="fas fa-user"></i>
+                                inactive
+                            </span>
+                        </td>
+                        <td>Jan 10, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon" title="More options">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-number">4</div>
+                <div class="card-label">Total Users</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">3</div>
+                <div class="card-label">Active Users</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">1</div>
+                <div class="card-label">Super Admins</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">2</div>
+                <div class="card-label">Partners</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -33,6 +33,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i>
             <span>BOLDTRAIL</span>
             <div class="super-admin">SUPER ADMIN</div>
         </div>
@@ -41,7 +42,7 @@
             <div class="nav-section">
                 <h3>APPROVALS</h3>
                 <ul>
-                    <li><i class="fas fa-file-alt"></i> <a href="partners.html">Partners</a> <span class="notification-badge">2</span></li>
+                    <li><i class="fas fa-file-alt"></i> Partner Applications</li>
                     <li><i class="fas fa-briefcase"></i> MCP Integrations</li>
                 </ul>
             </div>
@@ -49,7 +50,9 @@
             <div class="nav-section">
                 <h3>USER MANAGEMENT</h3>
                 <ul>
-                    <li><i class="fas fa-user"></i> <a href="users.html">Users</a></li>
+                    <li><i class="fas fa-user"></i> Users</li>
+                    <li><i class="fas fa-building"></i> Organizations</li>
+                    <li><i class="fas fa-users"></i> Workspaces</li>
                 </ul>
             </div>
             
@@ -57,6 +60,8 @@
                 <h3>API MANAGEMENT</h3>
                 <ul>
                     <li class="active"><i class="fas fa-key"></i> API Keys</li>
+                    <li><i class="fas fa-link"></i> Webhooks</li>
+                    <li><i class="fas fa-bolt"></i> Limits</li>
                 </ul>
             </div>
         </nav>
@@ -76,6 +81,16 @@
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" placeholder="Search by key name or vendor...">
+            </div>
+            <div class="filter-dropdown">
+                <i class="fas fa-filter"></i>
+                <select>
+                    <option>All Vendors</option>
+                    <option>Sisu</option>
+                    <option>Shilo</option>
+                    <option>Internal Use</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
             </div>
             <button class="btn-primary" onclick="openCreateKeyModal()">
                 <i class="fas fa-plus"></i>
@@ -105,7 +120,7 @@
                         <td>
                             <div class="api-key-display" onclick="copyApiKey('bt_live_51JXabc123def456', this)">
                                 <div class="api-key-text">bt_live_••••••••••••••••</div>
-                                <div class="copy-instruction">Click to copy</div>
+                                <div class="copy-instruction">(Click to copy - one time only)</div>
                             </div>
                         </td>
                         <td>
@@ -143,7 +158,7 @@
                         <td>
                             <div class="api-key-display" onclick="copyApiKey('bt_live_51JXdef789ghi012', this)">
                                 <div class="api-key-text">bt_live_••••••••••••••••</div>
-                                <div class="copy-instruction">Click to copy</div>
+                                <div class="copy-instruction">(Click to copy - one time only)</div>
                             </div>
                         </td>
                         <td>
@@ -165,7 +180,7 @@
                                 <span class="permission-tag">create:contacts</span>
                             </div>
                         </td>
-                        <td>Dec 15, 2025</td>
+                        <td>Dec 15, 2024</td>
                         <td>Aug 18, 2024</td>
                         <td>Zander Laurent</td>
                         <td>1 day ago</td>
@@ -180,7 +195,7 @@
                         <td>
                             <div class="api-key-display" onclick="copyApiKey('bt_live_51JXghi345jkl678', this)">
                                 <div class="api-key-text">bt_live_••••••••••••••••</div>
-                                <div class="copy-instruction">Click to copy</div>
+                                <div class="copy-instruction">(Click to copy - one time only)</div>
                             </div>
                         </td>
                         <td>
@@ -279,31 +294,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="vendorSelect">Partner*</label>
+                    <label for="vendorSelect">Vendor*</label>
                     <select id="vendorSelect">
-                        <option value="">Select a partner...</option>
+                        <option value="">Select a vendor...</option>
                         <option value="sisu">Sisu</option>
                         <option value="shilo">Shilo</option>
-                        <option value="boldtrail-dev">BoldTrail Development</option>
+                        <option value="internal">Internal Use</option>
                     </select>
-                    <div class="error-message" id="vendorError">Partner is required</div>
+                    <div class="error-message" id="vendorError">Vendor is required</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="userEmail">User ID*</label>
-                    <input type="text" id="userEmail" placeholder="Enter user ID">
-                    <div class="error-message" id="userEmailError">User ID is required</div>
+                    <label for="userEmail">User Email*</label>
+                    <input type="email" id="userEmail" placeholder="Enter user email">
+                    <div class="error-message" id="userEmailError">User email is required</div>
                     <div class="error-message" id="userEmailNotFoundError" style="display: none;">No matching user found</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="scopeSelect">Top Level Scope*</label>
-                    <select id="scopeSelect" onchange="updatePermissionsByScope()">
-                        <option value="">Select a scope...</option>
-                        <option value="platform">Platform</option>
-                        <option value="crm">CRM</option>
-                    </select>
-                    <div class="error-message" id="scopeError">Scope is required</div>
                 </div>
 
                 <div class="form-group">
@@ -314,8 +319,37 @@
                             <button type="button" class="btn-link" onclick="selectNoPermissions()">None</button>
                         </div>
                     </div>
-                    <div class="permissions-grid" id="permissionsGrid">
-                        <!-- Permissions will be populated based on scope selection -->
+                    <div class="permissions-grid">
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="read:contacts">
+                            <span class="checkbox-custom"></span>
+                            read:contacts
+                        </label>
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="edit:contacts">
+                            <span class="checkbox-custom"></span>
+                            edit:contacts
+                        </label>
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="delete:contacts">
+                            <span class="checkbox-custom"></span>
+                            delete:contacts
+                        </label>
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="create:contacts">
+                            <span class="checkbox-custom"></span>
+                            create:contacts
+                        </label>
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="read:users">
+                            <span class="checkbox-custom"></span>
+                            read:users
+                        </label>
+                        <label class="permission-checkbox">
+                            <input type="checkbox" name="permissions" value="read:private_contacts">
+                            <span class="checkbox-custom"></span>
+                            read:private_contacts
+                        </label>
                     </div>
                     <div class="error-message" id="permissionsError">At least one permission is required</div>
                 </div>
@@ -378,14 +412,6 @@
                 <button class="btn-secondary" onclick="closeRefreshKeyModal()">Cancel</button>
                 <button class="btn-danger" onclick="confirmRefreshApiKey()">Refresh Key</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Success Toaster -->
-    <div id="successToaster" class="toaster">
-        <div class="toaster-content">
-            <i class="fas fa-check-circle"></i>
-            <span id="toasterMessage"></span>
         </div>
     </div>
 

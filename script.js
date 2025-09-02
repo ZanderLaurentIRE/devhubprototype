@@ -3,6 +3,9 @@ function openCreateKeyModal() {
     const modal = document.getElementById('createKeyModal');
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
+    
+    // Load default permissions when modal opens
+    updatePermissionsByScope();
 }
 
 function closeCreateKeyModal() {
@@ -52,6 +55,68 @@ function selectNoPermissions() {
     });
 }
 
+// Scope-based permissions data
+const permissionsData = {
+    platform: [
+        { resource: 'users', verb: 'read', label: 'users:read' },
+        { resource: 'users', verb: 'write', label: 'users:write' },
+        { resource: 'users', verb: 'delete', label: 'users:delete' },
+        { resource: 'organizations', verb: 'read', label: 'organizations:read' },
+        { resource: 'organizations', verb: 'write', label: 'organizations:write' },
+        { resource: 'workspaces', verb: 'read', label: 'workspaces:read' },
+        { resource: 'workspaces', verb: 'write', label: 'workspaces:write' },
+        { resource: 'settings', verb: 'read', label: 'settings:read' },
+        { resource: 'settings', verb: 'write', label: 'settings:write' }
+    ],
+    crm: [
+        { resource: 'contacts', verb: 'read', label: 'contacts:read' },
+        { resource: 'contacts', verb: 'write', label: 'contacts:write' },
+        { resource: 'contacts', verb: 'delete', label: 'contacts:delete' },
+        { resource: 'leads', verb: 'read', label: 'leads:read' },
+        { resource: 'leads', verb: 'write', label: 'leads:write' },
+        { resource: 'deals', verb: 'read', label: 'deals:read' },
+        { resource: 'deals', verb: 'write', label: 'deals:write' },
+        { resource: 'tasks', verb: 'read', label: 'tasks:read' },
+        { resource: 'tasks', verb: 'write', label: 'tasks:write' }
+    ]
+};
+
+// Update permissions based on scope selection
+function updatePermissionsByScope() {
+    const scopeSelect = document.getElementById('scopeSelect');
+    const permissionsGrid = document.getElementById('permissionsGrid');
+    const scope = scopeSelect.value;
+    
+    if (!scope) {
+        // Show default permissions when no scope is selected
+        const defaultPermissions = [
+            { resource: 'contacts', verb: 'read', label: 'contacts:read' },
+            { resource: 'contacts', verb: 'write', label: 'contacts:write' },
+            { resource: 'contacts', verb: 'delete', label: 'contacts:delete' },
+            { resource: 'contacts', verb: 'create', label: 'contacts:create' },
+            { resource: 'users', verb: 'read', label: 'users:read' },
+            { resource: 'private_contacts', verb: 'read', label: 'private_contacts:read' }
+        ];
+        
+        permissionsGrid.innerHTML = defaultPermissions.map(permission => `
+            <label class="permission-checkbox">
+                <input type="checkbox" name="permissions" value="${permission.label}">
+                ${permission.label}
+            </label>
+        `).join('');
+        return;
+    }
+    
+    const permissions = permissionsData[scope] || [];
+    
+    permissionsGrid.innerHTML = permissions.map(permission => `
+        <label class="permission-checkbox">
+            <input type="checkbox" name="permissions" value="${permission.label}">
+            ${permission.label}
+        </label>
+    `).join('');
+}
+
 function filterPermissions() {
     const searchTerm = document.getElementById('permissionSearch').value.toLowerCase();
     const checkboxes = document.querySelectorAll('.permission-checkbox');
@@ -77,8 +142,9 @@ function handleFormSubmission(e) {
 
     const keyData = {
         name: document.getElementById('keyName').value.trim(),
-        vendor: document.getElementById('vendorSelect').value,
-        userEmail: document.getElementById('userEmail').value.trim(),
+        partner: document.getElementById('vendorSelect').value,
+        userId: document.getElementById('userEmail').value.trim(),
+        scope: document.getElementById('scopeSelect').value,
         permissions: Array.from(document.querySelectorAll('input[name="permissions"]:checked')).map(cb => cb.value),
         expires: document.getElementById('expires').value
     };
@@ -93,12 +159,17 @@ function handleFormSubmission(e) {
         hasErrors = true;
     }
 
-    if (!keyData.vendor) {
+    if (!keyData.partner) {
         showError('vendorError', 'vendorSelect');
         hasErrors = true;
     }
 
-    if (!keyData.userEmail) {
+    if (!keyData.scope) {
+        showError('scopeError', 'scopeSelect');
+        hasErrors = true;
+    }
+
+    if (!keyData.userId) {
         showError('userEmailError', 'userEmail');
         hasErrors = true;
     } else if (!isValidEmail(keyData.userEmail)) {

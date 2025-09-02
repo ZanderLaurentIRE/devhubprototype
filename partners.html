@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin - Partner Applications</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>BOLDTRAIL</span>
+            </div>
+            <div class="breadcrumb">
+                <span>Super Admin</span>
+                <i class="fas fa-chevron-right"></i>
+                <span>Fancy Greeting</span>
+                <span class="system-access-badge">System Access</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-shield-alt"></i>
+                <div class="user-details">
+                    <span>Super Admin</span>
+                    <span>Super Admin</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span>BOLDTRAIL</span>
+            <div class="super-admin">SUPER ADMIN</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>APPROVALS</h3>
+                <ul>
+                    <li><i class="fas fa-file-alt"></i> <a href="partners.html">Partners</a> <span class="notification-badge">2</span></li>
+                    <li><i class="fas fa-briefcase"></i> MCP Integrations</li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>USER MANAGEMENT</h3>
+                <ul>
+                    <li><i class="fas fa-user"></i> <a href="users.html">Users</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>API MANAGEMENT</h3>
+                <ul>
+                    <li><i class="fas fa-key"></i> <a href="index.html">API Keys</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Partner Applications</h1>
+            <p>Review and manage partnership applications</p>
+            <button onclick="testToast()" style="margin-top: 10px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">Test Toast</button>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-number">3</div>
+                <div class="card-label">Total Applications</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">3</div>
+                <div class="card-label">Submitted</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">0</div>
+                <div class="card-label">Under Review</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">0</div>
+                <div class="card-label">Approved</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">0</div>
+                <div class="card-label">Rejected</div>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search by company name or email...">
+            </div>
+            <div class="filter-dropdown">
+                <i class="fas fa-filter"></i>
+                <select>
+                    <option>All Status</option>
+                    <option>Submitted</option>
+                    <option>Under Review</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Applications Table -->
+        <div class="table-container">
+            <table class="applications-table">
+                <thead>
+                    <tr>
+                        <th data-sort="company">
+                            <div class="sortable">
+                                COMPANY
+                                <span class="sort-arrow"></span>
+                            </div>
+                        </th>
+                        <th data-sort="contact">
+                            <div class="sortable">
+                                CONTACT
+                                <span class="sort-arrow"></span>
+                            </div>
+                        </th>
+                        <th data-sort="tier">
+                            <div class="sortable">
+                                TIER
+                                <span class="sort-arrow"></span>
+                            </div>
+                        </th>
+                        <th data-sort="status">
+                            <div class="sortable">
+                                STATUS
+                                <span class="sort-arrow"></span>
+                            </div>
+                        </th>
+                        <th data-sort="submitted">
+                            <div class="sortable">
+                                SUBMITTED
+                                <span class="sort-arrow active desc"></span>
+                            </div>
+                        </th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <div class="company-name">Legacy Partner Inc</div>
+                                <div class="company-details">Real Estate • 11-50 employees</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div class="contact-name">John Smith</div>
+                                <div class="contact-email">jsmith@legacypartner.com</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tier-badge tier-silver">SILVER</span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-deactivated">
+                                <i class="fas fa-circle"></i>
+                                Deactivated
+                            </span>
+                        </td>
+                        <td>Jul 05, 2025, 09:15 AM</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-view">
+                                    <i class="fas fa-eye"></i>
+                                    View
+                                </button>
+                                <button class="btn-impersonate">
+                                    <i class="fas fa-user"></i>
+                                    Impersonate
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <div class="company-name">test</div>
+                                <div class="company-details">Real Estate • 51-200 employees</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div class="contact-name">Attila Developer</div>
+                                <div class="contact-email">test@test.com</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tier-badge tier-silver">SILVER</span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-live">
+                                <i class="fas fa-circle"></i>
+                                Live Integration
+                            </span>
+                        </td>
+                        <td>Aug 18, 2025, 11:41 AM</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-view">
+                                    <i class="fas fa-eye"></i>
+                                    View
+                                </button>
+                                <button class="btn-impersonate">
+                                    <i class="fas fa-user"></i>
+                                    Impersonate
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <div class="company-name">Zander company</div>
+                                <div class="company-details">test • 1-10 employees</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div class="contact-name">Zander Laurent</div>
+                                <div class="contact-email">alaurent@insiderealestate.com</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tier-badge tier-platinum">PLATINUM</span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-submitted">
+                                <i class="fas fa-clock"></i>
+                                Submitted
+                            </span>
+                        </td>
+                        <td>Aug 12, 2025, 03:58 PM</td>
+                        <td>
+                            <button class="btn-view">
+                                <i class="fas fa-eye"></i>
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="company-info">
+                                <div class="company-name">Test</div>
+                                <div class="company-details">test • 1-10 employees</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div class="contact-name">Nate-test Back</div>
+                                <div class="contact-email">test@test.com</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tier-badge tier-silver">SILVER</span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-submitted">
+                                <i class="fas fa-clock"></i>
+                                Submitted
+                            </span>
+                        </td>
+                        <td>Aug 12, 2025, 03:04 PM</td>
+                        <td>
+                            <button class="btn-view">
+                                <i class="fas fa-eye"></i>
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing 1-4 of 4 results
+            </div>
+            <div class="pagination-controls">
+                <div class="rows-per-page">
+                    <span>Rows per page:</span>
+                    <select class="rows-select">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                </div>
+                <div class="page-numbers">
+                    <button class="page-nav" disabled>‹ Previous</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-nav" disabled>Next ›</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Partnership Application Details Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content application-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h2>test</h2>
+                    <p>Partnership Application Details</p>
+                </div>
+                <button class="close-btn" onclick="closeApplicationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Status and Actions -->
+                <div class="status-actions">
+                    <div class="status-badges">
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn status-dropdown" onclick="toggleDropdown('statusDropdown')">
+                                <i class="fas fa-clock"></i>
+                                <span>SUBMITTED</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="statusDropdown">
+                                <div class="dropdown-item" data-value="submitted">SUBMITTED</div>
+                                <div class="dropdown-item" data-value="under-review">UNDER REVIEW</div>
+                                <div class="dropdown-item" data-value="live-integration">LIVE INTEGRATION</div>
+                                <div class="dropdown-item" data-value="deactivated">DEACTIVATED</div>
+                                <div class="dropdown-item" data-value="rejected">REJECTED</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-container">
+                            <button class="dropdown-btn tier-dropdown" onclick="toggleDropdown('tierDropdown')">
+                                <span>SILVER</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="tierDropdown">
+                                <div class="dropdown-item" data-value="platinum">PLATINUM</div>
+                                <div class="dropdown-item" data-value="gold">GOLD</div>
+                                <div class="dropdown-item" data-value="silver">SILVER</div>
+                                <div class="dropdown-item" data-value="bronze">BRONZE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-welcome-email">
+                            <i class="fas fa-envelope"></i>
+                            Send Welcome Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Information -->
+                <div class="info-section">
+                    <h3>Company Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>test</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-building"></i>
+                            <span>Real Estate</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-users"></i>
+                            <span>51-200 employees</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-globe"></i>
+                            <a href="https://attilafake.com" target="_blank">https://attilafake.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="info-section">
+                    <h3>Contact Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            <span>Attila Developer</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:test@itest.com">test@itest.com</a>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-id-badge"></i>
+                            <span>King of the devs</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span>7015558383</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Information -->
+                <div class="info-section">
+                    <h3>Technical Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span><strong>Primary Use Case:</strong> Test</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span><strong>Calls/Volume:</strong> 10k-100k calls</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span><strong>Timeline:</strong> 1-3months</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span><strong>Budget/Value:</strong> $1m-5m</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-code"></i>
+                            <span><strong>Technology Stack:</strong> All stacks</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-bullseye"></i>
+                            <span><strong>Target Market:</strong> Test</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-headset"></i>
+                            <span><strong>Support Needs:</strong> Build it</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <!-- Application Timeline -->
+                <div class="info-section">
+                    <h3>Application Timeline</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-paper-plane"></i>
+                            <span><strong>Submitted:</strong> Aug 18, 2025, 11:41 AM</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-edit"></i>
+                            <span><strong>Last Updated:</strong> Aug 18, 2025, 11:41 AM</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-bullhorn"></i>
+                            <span><strong>Marketing Interest:</strong> <span class="text-success">Yes</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toaster Container -->
+    <div id="toaster" class="toaster"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Global functions for dropdowns and modals
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            
+            // Toggle current dropdown
+            if (!isOpen) {
+                dropdown.classList.add('show');
+            }
+        }
+
+        function openApplicationModal() {
+            const modal = document.getElementById('applicationModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeApplicationModal() {
+            const modal = document.getElementById('applicationModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function updateDropdownStyling(button, value) {
+            // Remove all existing classes
+            button.className = 'dropdown-btn';
+            
+            if (button.classList.contains('status-dropdown')) {
+                button.classList.add('status-dropdown');
+                button.classList.add(`status-${value}`);
+            } else if (button.classList.contains('tier-dropdown')) {
+                button.classList.add('tier-dropdown');
+                button.classList.add(`tier-${value}`);
+            }
+        }
+
+        // Toaster functionality
+        window.showToast = function(type, title, message, duration = 4000) {
+            console.log('showToast called with:', type, title, message);
+            const toaster = document.getElementById('toaster');
+            console.log('Toaster element:', toaster);
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fas fa-check-circle',
+                info: 'fas fa-info-circle',
+                warning: 'fas fa-exclamation-triangle',
+                error: 'fas fa-times-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="toast-icon ${iconMap[type]}"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="removeToast(this.parentElement)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toaster.appendChild(toast);
+            
+            // Auto remove after duration
+            setTimeout(() => {
+                removeToast(toast);
+            }, duration);
+        };
+
+        window.removeToast = function(toast) {
+            if (toast && toast.parentElement) {
+                toast.classList.add('removing');
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.parentElement.removeChild(toast);
+                    }
+                }, 300);
+            }
+        };
+
+        // Test function to verify toaster works
+        window.testToast = function() {
+            console.log('Test toast function called');
+            window.showToast('success', 'Test Toast', 'This is a test toast notification!', 3000);
+        };
+
+        // Scope dropdown functionality
+        window.toggleScopeDropdown = function() {
+            const dropdown = document.getElementById('scopeDropdown');
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            
+            // Toggle current dropdown
+            if (!isOpen) {
+                dropdown.classList.add('show');
+            }
+        };
+
+        // Permissions data structure
+        const permissionsData = {
+            platform: [
+                { resource: 'users', verb: 'read', label: 'users:read' },
+                { resource: 'users', verb: 'write', label: 'users:write' },
+                { resource: 'users', verb: 'delete', label: 'users:delete' },
+                { resource: 'organizations', verb: 'read', label: 'organizations:read' },
+                { resource: 'organizations', verb: 'write', label: 'organizations:write' },
+                { resource: 'workspaces', verb: 'read', label: 'workspaces:read' },
+                { resource: 'workspaces', verb: 'write', label: 'workspaces:write' },
+                { resource: 'settings', verb: 'read', label: 'settings:read' },
+                { resource: 'settings', verb: 'write', label: 'settings:write' }
+            ],
+            crm: [
+                { resource: 'contacts', verb: 'read', label: 'contacts:read' },
+                { resource: 'contacts', verb: 'write', label: 'contacts:write' },
+                { resource: 'contacts', verb: 'delete', label: 'contacts:delete' },
+                { resource: 'leads', verb: 'read', label: 'leads:read' },
+                { resource: 'leads', verb: 'write', label: 'leads:write' },
+                { resource: 'deals', verb: 'read', label: 'deals:read' },
+                { resource: 'deals', verb: 'write', label: 'deals:write' },
+                { resource: 'tasks', verb: 'read', label: 'tasks:read' },
+                { resource: 'tasks', verb: 'write', label: 'tasks:write' }
+            ]
+        };
+
+        // Update permissions based on scope selection
+        function updatePermissions(scope) {
+            const permissionsGrid = document.getElementById('permissionsGrid');
+            const permissions = permissionsData[scope] || [];
+            
+            permissionsGrid.innerHTML = permissions.map(permission => `
+                <div class="permission-tag" data-resource="${permission.resource}" data-verb="${permission.verb}">
+                    <input type="checkbox" id="perm_${permission.resource}_${permission.verb}" class="permission-checkbox">
+                    <label for="perm_${permission.resource}_${permission.verb}">${permission.label}</label>
+                </div>
+            `).join('');
+        }
+
+        // Select all permissions
+        window.selectAllPermissions = function() {
+            const checkboxes = document.querySelectorAll('.permission-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        };
+
+        // Select no permissions
+        window.selectNoPermissions = function() {
+            const checkboxes = document.querySelectorAll('.permission-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        };
+
+        // Global dropdown item selection handler
+        document.addEventListener('click', function(e) {
+            console.log('Click event on:', e.target);
+            if (e.target.classList.contains('dropdown-item')) {
+                console.log('Dropdown item clicked:', e.target.textContent);
+                const dropdown = e.target.closest('.dropdown-menu');
+                const dropdownBtn = dropdown.previousElementSibling;
+                const selectedValue = e.target.dataset.value;
+                const selectedText = e.target.textContent;
+                
+                // Get previous value for comparison
+                const previousText = dropdownBtn.querySelector('span').textContent;
+                console.log('Previous text:', previousText, 'New text:', selectedText);
+                
+                // Update button text
+                const span = dropdownBtn.querySelector('span');
+                if (span) {
+                    span.textContent = selectedText;
+                }
+                
+                // Update button styling based on selection
+                updateDropdownStyling(dropdownBtn, selectedValue);
+                
+                // Show toast notification
+                if (dropdownBtn.classList.contains('status-dropdown')) {
+                    console.log('Showing status toast');
+                    window.showToast('success', 'Status Updated', `Status changed from ${previousText} to ${selectedText}`, 3000);
+                } else if (dropdownBtn.classList.contains('tier-dropdown')) {
+                    console.log('Showing tier toast');
+                    window.showToast('success', 'Tier Updated', `Tier changed from ${previousText} to ${selectedText}`, 3000);
+                } else if (dropdownBtn.classList.contains('scope-dropdown')) {
+                    console.log('Showing scope toast');
+                    window.showToast('success', 'Scope Updated', `Scope changed from ${previousText} to ${selectedText}`, 3000);
+                    // Update permissions based on new scope
+                    updatePermissions(selectedValue);
+                }
+                
+                // Close dropdown
+                dropdown.classList.remove('show');
+            }
+            
+            // Close dropdowns when clicking outside
+            if (!e.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Partner Applications specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add sorting functionality
+            const headers = document.querySelectorAll('th[data-sort]');
+            let currentSort = { column: 'submitted', direction: 'desc' }; // Default sort
+            
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    const sortKey = this.dataset.sort;
+                    const arrow = this.querySelector('.sort-arrow');
+                    
+                    // Reset all arrows
+                    document.querySelectorAll('.sort-arrow').forEach(a => {
+                        a.className = 'sort-arrow';
+                    });
+                    
+                    // Determine sort direction
+                    let direction = 'asc';
+                    if (currentSort.column === sortKey) {
+                        // Toggle direction if clicking same column
+                        direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                    }
+                    
+                    // Update arrow classes
+                    arrow.className = `sort-arrow active ${direction}`;
+                    
+                    // Update current sort
+                    currentSort = { column: sortKey, direction: direction };
+                    
+                    // Sort the table
+                    sortTable(sortKey, direction);
+                });
+            });
+            
+            function sortTable(column, direction) {
+                const tbody = document.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const columnIndex = Array.from(headers).findIndex(h => h.dataset.sort === column);
+                
+                rows.sort((a, b) => {
+                    let aValue = a.cells[columnIndex].textContent.trim();
+                    let bValue = b.cells[columnIndex].textContent.trim();
+                    
+                    // Handle date sorting for Submitted column
+                    if (column === 'submitted') {
+                        aValue = new Date(aValue).getTime();
+                        bValue = new Date(bValue).getTime();
+                    }
+                    
+                    // Handle tier sorting with custom order
+                    if (column === 'tier') {
+                        const tierOrder = { 'PLATINUM': 1, 'GOLD': 2, 'SILVER': 3, 'BRONZE': 4 };
+                        aValue = tierOrder[aValue.toUpperCase()] || 99;
+                        bValue = tierOrder[bValue.toUpperCase()] || 99;
+                    }
+                    
+                    if (aValue < bValue) {
+                        return direction === 'asc' ? -1 : 1;
+                    }
+                    if (aValue > bValue) {
+                        return direction === 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+                
+                // Re-append sorted rows
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-box input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('tbody tr');
+                    
+                    rows.forEach(row => {
+                        const companyName = row.querySelector('.company-name')?.textContent.toLowerCase() || '';
+                        const contactName = row.querySelector('.contact-name')?.textContent.toLowerCase() || '';
+                        const contactEmail = row.querySelector('.contact-email')?.textContent.toLowerCase() || '';
+                        
+                        const matches = companyName.includes(searchTerm) || 
+                                       contactName.includes(searchTerm) || 
+                                       contactEmail.includes(searchTerm);
+                        
+                        row.style.display = matches ? '' : 'none';
+                    });
+                });
+            }
+
+            // Filter functionality
+            const filterSelect = document.querySelector('.filter-dropdown select');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function() {
+                    const selectedStatus = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('tbody tr');
+                    
+                    rows.forEach(row => {
+                        const status = row.querySelector('.status-badge')?.textContent.toLowerCase() || '';
+                        const matches = selectedStatus === 'all status' || status.includes(selectedStatus);
+                        row.style.display = matches ? '' : 'none';
+                    });
+                });
+            }
+
+            // Close modal on outside click
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    closeApplicationModal();
+                }
+            });
+
+            // Close modal on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeApplicationModal();
+                }
+            });
+
+            // Add click handlers to all View buttons
+            document.querySelectorAll('.btn-view').forEach(button => {
+                button.addEventListener('click', openApplicationModal);
+            });
+
+            // Add click handler for welcome email button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-welcome-email')) {
+                    window.showToast('success', 'Welcome Email Sent', 'Welcome email has been sent to the partner successfully!', 4000);
+                }
+            });
+
+
+        });
+    </script>
+</body>
+</html>
