@@ -81,6 +81,9 @@
                 <i class="fas fa-plus"></i>
                 Create Key
             </button>
+            <button class="btn-secondary" onclick="testJavaScript()" style="margin-left: 10px;">
+                Test JS
+            </button>
         </div>
 
         <!-- API Keys Table -->
@@ -123,9 +126,9 @@
                         </td>
                         <td>
                             <div class="permissions">
-                                <span class="permission-tag">read:contacts</span>
-                                <span class="permission-tag">edit:contacts</span>
-                                <span class="permission-tag" data-tooltip="delete:contacts, create:contacts, read:users">+3 more</span>
+                                <span class="permission-tag">contacts:read</span>
+                                <span class="permission-tag">contacts:edit</span>
+                                <span class="permission-tag" data-tooltip="contacts:delete, contacts:create, users:read">+3 more</span>
                             </div>
                         </td>
                         <td>Never</td>
@@ -161,8 +164,8 @@
                         </td>
                         <td>
                             <div class="permissions">
-                                <span class="permission-tag">read:contacts</span>
-                                <span class="permission-tag">create:contacts</span>
+                                <span class="permission-tag">contacts:read</span>
+                                <span class="permission-tag">contacts:create</span>
                             </div>
                         </td>
                         <td>Dec 15, 2025</td>
@@ -198,10 +201,10 @@
                         </td>
                         <td>
                             <div class="permissions">
-                                <span class="permission-tag">read:contacts</span>
-                                <span class="permission-tag">edit:contacts</span>
-                                <span class="permission-tag">delete:contacts</span>
-                                <span class="permission-tag" data-tooltip="create:contacts, read:users">+2 more</span>
+                                <span class="permission-tag">contacts:read</span>
+                                <span class="permission-tag">contacts:edit</span>
+                                <span class="permission-tag">contacts:delete</span>
+                                <span class="permission-tag" data-tooltip="contacts:create, users:read">+2 more</span>
                             </div>
                         </td>
                         <td>Sep 20, 2024</td>
@@ -237,12 +240,12 @@
                         </td>
                         <td>
                             <div class="permissions">
-                                <span class="permission-tag">read:contacts</span>
-                                <span class="permission-tag">edit:contacts</span>
-                                <span class="permission-tag">delete:contacts</span>
-                                <span class="permission-tag">create:contacts</span>
-                                <span class="permission-tag">read:users</span>
-                                <span class="permission-tag">read:private_contacts</span>
+                                <span class="permission-tag">contacts:read</span>
+                                <span class="permission-tag">contacts:edit</span>
+                                <span class="permission-tag">contacts:delete</span>
+                                <span class="permission-tag">contacts:create</span>
+                                <span class="permission-tag">users:read</span>
+                                <span class="permission-tag">private_contacts:read</span>
                             </div>
                         </td>
                         <td class="expired">Aug 1, 2024</td>
@@ -274,36 +277,47 @@
             <form id="createKeyForm">
                 <div class="form-group">
                     <label for="keyName">Key Name*</label>
-                    <input type="text" id="keyName" placeholder="e.g., production-api-key">
+                    <input type="text" id="keyName" name="keyName" placeholder="e.g., production-api-key">
                     <div class="error-message" id="keyNameError">Key name is required</div>
                 </div>
 
                 <div class="form-group">
                     <label for="vendorSelect">Partner*</label>
-                    <select id="vendorSelect">
+                    <select id="vendorSelect" name="vendor">
                         <option value="">Select a partner...</option>
                         <option value="sisu">Sisu</option>
-                        <option value="shilo">Shilo</option>
                         <option value="boldtrail-dev">BoldTrail Development</option>
+                        <option value="shilo">Shilo</option>
                     </select>
                     <div class="error-message" id="vendorError">Partner is required</div>
                 </div>
 
                 <div class="form-group">
                     <label for="userEmail">User ID*</label>
-                    <input type="text" id="userEmail" placeholder="Enter user ID">
+                    <input type="text" id="userEmail" name="userEmail" placeholder="Enter user ID">
                     <div class="error-message" id="userEmailError">User ID is required</div>
                     <div class="error-message" id="userEmailNotFoundError" style="display: none;">No matching user found</div>
                 </div>
 
                 <div class="form-group">
                     <label for="scopeSelect">Top Level Scope*</label>
-                    <select id="scopeSelect" onchange="updatePermissionsByScope()">
-                        <option value="">Select a scope...</option>
-                        <option value="platform">Platform</option>
-                        <option value="crm">CRM</option>
-                    </select>
-                    <div class="error-message" id="scopeError">Scope is required</div>
+                    <div class="multiselect-container">
+                        <div class="multiselect-display" onclick="toggleMultiselect()">
+                            <span id="scopeDisplay">Select scopes...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multiselect-dropdown" id="scopeDropdown">
+                            <label class="multiselect-option">
+                                <input type="checkbox" value="platform" onchange="updateScopeSelection()">
+                                <span>Platform</span>
+                            </label>
+                            <label class="multiselect-option">
+                                <input type="checkbox" value="crm" onchange="updateScopeSelection()">
+                                <span>CRM</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="scopeError">At least one scope is required</div>
                 </div>
 
                 <div class="form-group">

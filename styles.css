@@ -534,6 +534,7 @@ body {
     max-width: 600px;
     max-height: 90vh;
     overflow-y: auto;
+    padding-bottom: 20px;
 }
 
 .modal-header {
@@ -567,6 +568,7 @@ body {
 /* Form */
 form {
     padding: 24px;
+    min-height: 400px;
 }
 
 .form-group {
@@ -811,6 +813,86 @@ select:invalid:focus {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 12px;
     margin-bottom: 16px;
+    min-height: 100px;
+}
+
+/* Multiselect styles */
+.multiselect-container {
+    position: relative;
+    width: 100%;
+}
+
+.multiselect-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    min-height: 38px;
+}
+
+.multiselect-display:hover {
+    border-color: #9ca3af;
+}
+
+.multiselect-display.open {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.multiselect-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    margin-top: 2px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.multiselect-dropdown.show {
+    display: block;
+}
+
+.multiselect-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.multiselect-option:last-child {
+    border-bottom: none;
+}
+
+.multiselect-option:hover {
+    background-color: #f3f4f6;
+}
+
+.multiselect-option input[type="checkbox"] {
+    margin: 0;
+    margin-right: 10px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.multiselect-option span {
+    font-size: 14px;
+    color: #374151;
+    flex: 1;
 }
 
 .permission-checkbox {
@@ -1678,6 +1760,40 @@ select:invalid:focus {
 .permission-tag label {
     cursor: pointer;
     font-weight: 500;
+    margin: 0;
+}
+
+/* Admin checkbox styling */
+.admin-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+/* Filter dropdown specific styling */
+.filter-dropdown {
+    background: white;
+    border-color: #d1d5db;
+    color: #374151;
+    min-width: 140px;
+}
+
+.admin-checkbox-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: #3b82f6;
+}
+
+.admin-label {
+    cursor: pointer;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
     margin: 0;
 }
 

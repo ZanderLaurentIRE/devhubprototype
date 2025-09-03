@@ -1,11 +1,35 @@
+// Test function to verify JavaScript is working
+function testJavaScript() {
+    alert('JavaScript is working!');
+    console.log('JavaScript test function called');
+    
+    // Test if other functions exist
+    console.log('openCreateKeyModal exists:', typeof openCreateKeyModal);
+    console.log('copyApiKey exists:', typeof copyApiKey);
+    console.log('refreshApiKey exists:', typeof refreshApiKey);
+    console.log('deleteApiKey exists:', typeof deleteApiKey);
+    
+    // Test if elements exist
+    console.log('createKeyModal exists:', document.getElementById('createKeyModal'));
+    console.log('scopeSelect exists:', document.getElementById('scopeSelect'));
+    console.log('permissionsGrid exists:', document.getElementById('permissionsGrid'));
+}
+
 // Modal functionality
 function openCreateKeyModal() {
+    console.log('openCreateKeyModal called');
     const modal = document.getElementById('createKeyModal');
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden';
-    
-    // Load default permissions when modal opens
-    updatePermissionsByScope();
+    console.log('Modal element:', modal);
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        // Load default permissions when modal opens
+        updatePermissionsByScope();
+        console.log('Modal opened successfully');
+    } else {
+        console.error('Modal not found!');
+    }
 }
 
 function closeCreateKeyModal() {
@@ -15,30 +39,123 @@ function closeCreateKeyModal() {
     resetForm();
 }
 
-// Close modal when clicking outside
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('createKeyModal');
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeCreateKeyModal();
-        }
-    });
-
-
-
-    // Handle form submission
+function resetForm() {
     const form = document.getElementById('createKeyForm');
-    form.addEventListener('submit', handleFormSubmission);
+    if (form) {
+        form.reset();
+        // Reset scope selection to default
+        const checkboxes = document.querySelectorAll('#scopeDropdown input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        
+        // Reset display text
+        const display = document.getElementById('scopeDisplay');
+        if (display) {
+            display.textContent = 'Select scopes...';
+        }
+        
+        // Clear permissions
+        const permissionsGrid = document.getElementById('permissionsGrid');
+        if (permissionsGrid) {
+            permissionsGrid.innerHTML = '<p>Please select at least one scope</p>';
+        }
+    }
+}
+
+function handleFormSubmission(e) {
+    e.preventDefault();
     
-    // Also handle submit button click as backup
-    const submitBtn = document.querySelector('#createKeyForm button[type="submit"]');
-    submitBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        handleFormSubmission(e);
+    const formData = new FormData(e.target);
+    const keyName = formData.get('keyName');
+    const vendor = formData.get('vendor');
+    const userEmail = formData.get('userEmail');
+    
+    // Get selected scopes from checkboxes
+    const selectedScopes = [];
+    const scopeCheckboxes = document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked');
+    scopeCheckboxes.forEach(checkbox => {
+        selectedScopes.push(checkbox.value);
     });
+    
+    // Validate required fields
+    if (!keyName || !vendor || !userEmail || selectedScopes.length === 0) {
+        alert('Please fill in all required fields including at least one scope');
+        return;
+    }
+    
+    // Get selected permissions
+    const selectedPermissions = [];
+    const permissionCheckboxes = document.querySelectorAll('input[name="permissions"]:checked');
+    permissionCheckboxes.forEach(checkbox => {
+        selectedPermissions.push(checkbox.value);
+    });
+    
+    if (selectedPermissions.length === 0) {
+        alert('Please select at least one permission');
+        return;
+    }
+    
+    // Here you would typically send the data to your backend
+    console.log('API Key Data:', {
+        keyName,
+        vendor,
+        userEmail,
+        scopes: selectedScopes,
+        permissions: selectedPermissions
+    });
+    
+    // Show success message
+    alert('API Key created successfully!');
+    
+    // Close modal and reset form
+    closeCreateKeyModal();
+}
 
+// Delete API Key functionality
+function closeDeleteKeyModal() {
+    const modal = document.getElementById('deleteKeyModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
 
-});
+function confirmDeleteApiKey() {
+    // Here you would typically call your backend API to delete the key
+    console.log('Deleting API key...');
+    alert('API Key deleted successfully!');
+    closeDeleteKeyModal();
+}
+
+// Refresh API Key functionality
+function closeRefreshKeyModal() {
+    const modal = document.getElementById('refreshKeyModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+function confirmRefreshApiKey() {
+    // Here you would typically call your backend API to refresh the key
+    console.log('Refreshing API key...');
+    alert('API Key refreshed successfully!');
+    closeRefreshKeyModal();
+}
+
+// API Key action functions
+function refreshApiKey(apiKey) {
+    console.log('Refreshing API key:', apiKey);
+    const modal = document.getElementById('refreshKeyModal');
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function deleteApiKey(apiKey) {
+    console.log('Deleting API key:', apiKey);
+    const modal = document.getElementById('deleteKeyModal');
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
 
 // Permission management
 function selectAllPermissions() {
@@ -81,469 +198,88 @@ const permissionsData = {
     ]
 };
 
+// Multiselect functionality
+function toggleMultiselect() {
+    const dropdown = document.getElementById('scopeDropdown');
+    const display = document.querySelector('.multiselect-display');
+    
+    if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+        display.classList.remove('open');
+    } else {
+        dropdown.classList.add('show');
+        display.classList.add('open');
+    }
+}
+
+function updateScopeSelection() {
+    const checkboxes = document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked');
+    const display = document.getElementById('scopeDisplay');
+    
+    if (checkboxes.length === 0) {
+        display.textContent = 'Select scopes...';
+    } else if (checkboxes.length === 1) {
+        display.textContent = checkboxes[0].value.charAt(0).toUpperCase() + checkboxes[0].value.slice(1);
+    } else {
+        display.textContent = `${checkboxes.length} scopes selected`;
+    }
+    
+    // Update permissions based on selected scopes
+    updatePermissionsByScope();
+}
+
 // Update permissions based on scope selection
 function updatePermissionsByScope() {
-    const scopeSelect = document.getElementById('scopeSelect');
+    console.log('updatePermissionsByScope called');
+    const checkboxes = document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked');
     const permissionsGrid = document.getElementById('permissionsGrid');
-    const scope = scopeSelect.value;
     
-    if (!scope) {
-        // Show default permissions when no scope is selected
-        const defaultPermissions = [
-            { resource: 'contacts', verb: 'read', label: 'contacts:read' },
-            { resource: 'contacts', verb: 'write', label: 'contacts:write' },
-            { resource: 'contacts', verb: 'delete', label: 'contacts:delete' },
-            { resource: 'contacts', verb: 'create', label: 'contacts:create' },
-            { resource: 'users', verb: 'read', label: 'users:read' },
-            { resource: 'private_contacts', verb: 'read', label: 'private_contacts:read' }
-        ];
-        
-        permissionsGrid.innerHTML = defaultPermissions.map(permission => `
+    if (!permissionsGrid) {
+        console.error('Permissions grid not found');
+        return;
+    }
+    
+    // Get all selected scopes
+    const selectedScopes = Array.from(checkboxes).map(cb => cb.value);
+    console.log('Selected scopes:', selectedScopes);
+    
+    if (selectedScopes.length === 0) {
+        permissionsGrid.innerHTML = '<p>Please select at least one scope</p>';
+        return;
+    }
+    
+    // Combine permissions from all selected scopes
+    let allPermissions = [];
+    selectedScopes.forEach(scope => {
+        const scopePermissions = permissionsData[scope] || [];
+        allPermissions = allPermissions.concat(scopePermissions);
+    });
+    
+    console.log('Combined permissions:', allPermissions);
+    
+    if (allPermissions.length > 0) {
+        permissionsGrid.innerHTML = allPermissions.map(permission => `
             <label class="permission-checkbox">
                 <input type="checkbox" name="permissions" value="${permission.label}">
                 ${permission.label}
             </label>
         `).join('');
-        return;
-    }
-    
-    const permissions = permissionsData[scope] || [];
-    
-    permissionsGrid.innerHTML = permissions.map(permission => `
-        <label class="permission-checkbox">
-            <input type="checkbox" name="permissions" value="${permission.label}">
-            ${permission.label}
-        </label>
-    `).join('');
-}
-
-function filterPermissions() {
-    const searchTerm = document.getElementById('permissionSearch').value.toLowerCase();
-    const checkboxes = document.querySelectorAll('.permission-checkbox');
-
-    checkboxes.forEach(checkbox => {
-        const text = checkbox.textContent.toLowerCase();
-        if (text.includes(searchTerm)) {
-            checkbox.style.display = 'flex';
-        } else {
-            checkbox.style.display = 'none';
-        }
-    });
-}
-
-// Form handling
-function handleFormSubmission(e) {
-    console.log('Form submission triggered');
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Clear previous errors
-    clearErrors();
-
-    const keyData = {
-        name: document.getElementById('keyName').value.trim(),
-        partner: document.getElementById('vendorSelect').value,
-        userId: document.getElementById('userEmail').value.trim(),
-        scope: document.getElementById('scopeSelect').value,
-        permissions: Array.from(document.querySelectorAll('input[name="permissions"]:checked')).map(cb => cb.value),
-        expires: document.getElementById('expires').value
-    };
-
-    let hasErrors = false;
-
-    // Validate form
-    console.log('Validating form...', keyData);
-    if (!keyData.name) {
-        console.log('Key name is empty');
-        showError('keyNameError', 'keyName');
-        hasErrors = true;
-    }
-
-    if (!keyData.partner) {
-        showError('vendorError', 'vendorSelect');
-        hasErrors = true;
-    }
-
-    if (!keyData.scope) {
-        showError('scopeError', 'scopeSelect');
-        hasErrors = true;
-    }
-
-    if (!keyData.userId) {
-        showError('userEmailError', 'userEmail');
-        hasErrors = true;
-    } else if (!isValidEmail(keyData.userEmail)) {
-        showError('userEmailError', 'userEmail');
-        hasErrors = true;
-    } else if (!isValidUser(keyData.userEmail)) {
-        showError('userEmailNotFoundError', 'userEmail');
-        hasErrors = true;
-    }
-
-    if (keyData.permissions.length === 0) {
-        showError('permissionsError');
-        hasErrors = true;
-    }
-
-    if (hasErrors) {
-        console.log('Form has errors, not submitting');
-        return false;
-    }
-
-    // Simulate API call
-    createApiKey(keyData);
-    return false;
-}
-
-function showError(errorId, fieldId = null) {
-    console.log('Showing error for:', errorId, fieldId);
-    const errorElement = document.getElementById(errorId);
-    if (errorElement) {
-        errorElement.classList.add('show');
-        errorElement.style.display = 'block';
-        errorElement.style.color = '#dc3545';
-        errorElement.style.fontSize = '12px';
-        errorElement.style.marginTop = '4px';
-        console.log('Error element found and shown');
+        console.log('Permissions grid updated with combined permissions');
     } else {
-        console.log('Error element not found:', errorId);
-    }
-    
-    if (fieldId) {
-        const fieldElement = document.getElementById(fieldId);
-        if (fieldElement) {
-            fieldElement.classList.add('error');
-            fieldElement.style.borderColor = '#dc3545';
-            console.log('Field error styling added');
-        } else {
-            console.log('Field element not found:', fieldId);
-        }
+        permissionsGrid.innerHTML = '<p>No permissions available for selected scopes</p>';
     }
 }
 
-function clearErrors() {
-    // Clear all error messages
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(error => {
-        error.classList.remove('show');
-        error.style.display = 'none';
-    });
-    
-    // Clear error styling from fields
-    const errorFields = document.querySelectorAll('.form-group input.error, .form-group select.error');
-    errorFields.forEach(field => {
-        field.classList.remove('error');
-        field.style.borderColor = '';
-    });
-}
-
-// Email validation helper
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// User validation helper - checks if user exists
-function isValidUser(email) {
-    // Mock user database - in real app this would be an API call
-    const validUsers = [
-        'john.smith@example.com',
-        'sarah.johnson@example.com',
-        'mike.chen@example.com',
-        'emily.davis@example.com',
-        'alex.rodriguez@example.com',
-        'test@example.com',
-        'user@company.com'
-    ];
-    
-    return validUsers.includes(email.toLowerCase());
-}
-
-// Toaster Functionality
-function showToaster(message) {
-    const toaster = document.getElementById('successToaster');
-    const toasterMessage = document.getElementById('toasterMessage');
-    
-    toasterMessage.textContent = message;
-    toaster.classList.add('show');
-    
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-        toaster.classList.remove('show');
-    }, 3000);
-}
-
-// Delete API Key Functionality
-let currentDeleteKey = null;
-
-function deleteApiKey(apiKey) {
-    currentDeleteKey = apiKey;
-    document.getElementById('deleteKeyModal').classList.add('show');
-}
-
-function closeDeleteKeyModal() {
-    document.getElementById('deleteKeyModal').classList.remove('show');
-    currentDeleteKey = null;
-}
-
-function confirmDeleteApiKey() {
-    if (currentDeleteKey) {
-        // Find and remove the row containing this API key
-        const rows = document.querySelectorAll('.api-keys-table tbody tr');
-        rows.forEach(row => {
-            const apiKeyDisplay = row.querySelector('.api-key-display');
-            if (apiKeyDisplay && apiKeyDisplay.getAttribute('onclick').includes(currentDeleteKey)) {
-                row.remove();
-            }
-        });
-        
-        closeDeleteKeyModal();
-        showToaster('API key deleted successfully');
-    }
-}
-
-// Refresh API Key Functionality
-let currentRefreshKey = null;
-
-function refreshApiKey(apiKey) {
-    currentRefreshKey = apiKey;
-    document.getElementById('refreshKeyModal').classList.add('show');
-}
-
-function closeRefreshKeyModal() {
-    document.getElementById('refreshKeyModal').classList.remove('show');
-    currentRefreshKey = null;
-}
-
-function confirmRefreshApiKey() {
-    if (currentRefreshKey) {
-        // Generate a new API key
-        const newApiKey = generateApiKey();
-        
-        // Find the row containing this API key and update it
-        const rows = document.querySelectorAll('.api-keys-table tbody tr');
-        rows.forEach(row => {
-            const apiKeyDisplay = row.querySelector('.api-key-display');
-            if (apiKeyDisplay && apiKeyDisplay.getAttribute('onclick').includes(currentRefreshKey)) {
-                // Update the API key display
-                apiKeyDisplay.setAttribute('onclick', `copyApiKey('${newApiKey}', this)`);
-                const apiKeyText = apiKeyDisplay.querySelector('.api-key-text');
-                apiKeyText.textContent = newApiKey.substring(0, 8) + '••••••••••••••••••••••••';
-                
-                // Reset copy state
-                apiKeyDisplay.classList.remove('copied');
-                const copyInstruction = apiKeyDisplay.querySelector('.copy-instruction');
-                copyInstruction.innerHTML = 'Click to copy';
-                
-                // Update created date to current date
-                const createdCell = row.querySelector('td:nth-child(7)'); // CREATED column
-                if (createdCell) {
-                    const today = new Date();
-                    createdCell.textContent = today.toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                    });
-                }
-            }
-        });
-        
-        closeRefreshKeyModal();
-        showToaster('API key refreshed successfully');
-    }
-}
-
-// Table Sorting Functionality
-let currentSortColumn = null;
-let currentSortDirection = 'asc';
-
-function sortTable(column) {
-    const table = document.querySelector('.api-keys-table tbody');
-    const rows = Array.from(table.querySelectorAll('tr'));
-    
-    // Toggle sort direction if same column
-    if (currentSortColumn === column) {
-        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentSortColumn = column;
-        currentSortDirection = 'asc';
-    }
-    
-    // Update sort icons
-    updateSortIcons(column);
-    
-    // Sort rows
-    rows.sort((a, b) => {
-        let aValue, bValue;
-        
-        if (column === 'created') {
-            aValue = a.querySelector('td:nth-child(7)').textContent; // CREATED column
-            bValue = b.querySelector('td:nth-child(7)').textContent;
-        } else if (column === 'expires') {
-            aValue = a.querySelector('td:nth-child(6)').textContent; // EXPIRES column
-            bValue = b.querySelector('td:nth-child(6)').textContent;
-        }
-        
-        // Convert dates for comparison
-        if (column === 'created' || column === 'expires') {
-            aValue = parseDate(aValue);
-            bValue = parseDate(bValue);
-        }
-        
-        if (currentSortDirection === 'asc') {
-            return aValue > bValue ? 1 : -1;
-        } else {
-            return aValue < bValue ? 1 : -1;
-        }
-    });
-    
-    // Reorder rows in table
-    rows.forEach(row => table.appendChild(row));
-}
-
-function updateSortIcons(column) {
-    const sortIcons = document.querySelectorAll('.sort-icon');
-    sortIcons.forEach(icon => {
-        const columnName = icon.parentElement.textContent.toLowerCase().includes('created') ? 'created' : 'expires';
-        if (columnName === column) {
-            icon.textContent = currentSortDirection === 'asc' ? '↑' : '↓';
-        } else {
-            icon.textContent = '↑';
-        }
-    });
-}
-
-function parseDate(dateStr) {
-    if (dateStr === 'Never') return new Date(9999, 11, 31); // Far future date
-    if (dateStr.includes('days') || dateStr.includes('months') || dateStr.includes('years')) {
-        return new Date(); // Current date for relative dates
-    }
-    
-    // Parse "Aug 15, 2024" format
-    const months = {
-        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
-        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
-    };
-    
-    const parts = dateStr.split(' ');
-    if (parts.length === 3) {
-        const month = months[parts[0]];
-        const day = parseInt(parts[1].replace(',', ''));
-        const year = parseInt(parts[2]);
-        return new Date(year, month, day);
-    }
-    
-    return new Date(); // Fallback
-}
-
-// Function to check if a date is expired
-function isExpired(dateStr) {
-    if (dateStr === 'Never') return false;
-    
-    const date = parseDate(dateStr);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day for comparison
-    
-    return date < today;
-}
-
-// Function to update expired states
-function updateExpiredStates() {
-            const rows = document.querySelectorAll('.api-keys-table tbody tr');
-        rows.forEach(row => {
-            const expiresCell = row.querySelector('td:nth-child(6)'); // EXPIRES column
-        if (expiresCell && !expiresCell.classList.contains('expired')) {
-            const dateStr = expiresCell.textContent.trim();
-            if (isExpired(dateStr)) {
-                expiresCell.classList.add('expired');
-            }
-        }
-    });
-}
-
-function createApiKey(keyData) {
-    // Show loading state
-    const submitBtn = document.querySelector('#createKeyForm button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Creating...';
-    submitBtn.disabled = true;
-
-    // Simulate API delay
-    setTimeout(() => {
-        // Generate mock API key
-        const apiKey = generateApiKey();
-        
-        // Show success message
-        showSuccessMessage(keyData, apiKey);
-        
-        // Reset form and close modal
-        closeCreateKeyModal();
-        
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-        
-        // Refresh table (in real app, this would update the table)
-        console.log('API Key created:', { ...keyData, key: apiKey });
-        
-    }, 1500);
-}
-
-function generateApiKey() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = 'bt_';
-    for (let i = 0; i < 32; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
-
-function showSuccessMessage(keyData, apiKey) {
-    const message = `
-        API Key created successfully!
-        
-        Key: ${apiKey}
-        Vendor: ${keyData.vendor}
-        User Email: ${keyData.userEmail}
-        Permissions: ${keyData.permissions.join(', ')}
-        
-        Please copy this key now as it won't be shown again.
-    `;
-    
-    alert(message);
-}
-
-function resetForm() {
-    const form = document.getElementById('createKeyForm');
-    form.reset();
-}
-
-// Table actions
-function viewKey(keyId) {
-    console.log('Viewing key:', keyId);
-    // In real app, this would open a modal with key details
-    alert('View key details for: ' + keyId);
-}
-
-function revokeKey(keyId) {
-    if (confirm('Are you sure you want to revoke this API key? This action cannot be undone.')) {
-        console.log('Revoking key:', keyId);
-        // In real app, this would make an API call to revoke the key
-        alert('API key revoked: ' + keyId);
-    }
-}
-
-// Search and filter functionality
+// Search functionality
 function searchKeys() {
     const searchTerm = document.querySelector('.search-box input').value.toLowerCase();
     const rows = document.querySelectorAll('.api-keys-table tbody tr');
     
     rows.forEach(row => {
-        const keyName = row.querySelector('.key-name').textContent.toLowerCase();
+        const keyName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
         const vendor = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-        const userAccount = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
         
-        if (keyName.includes(searchTerm) || vendor.includes(searchTerm) || userAccount.includes(searchTerm)) {
+        if (keyName.includes(searchTerm) || vendor.includes(searchTerm)) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
@@ -551,47 +287,65 @@ function searchKeys() {
     });
 }
 
-function filterByVendor() {
-    const filterValue = document.querySelector('.filter-dropdown select').value;
+// Update expired states
+function updateExpiredStates() {
     const rows = document.querySelectorAll('.api-keys-table tbody tr');
+    const now = new Date();
     
     rows.forEach(row => {
-        const vendor = row.querySelector('td:nth-child(2)').textContent;
-        
-        if (filterValue === 'All Vendors' || vendor === filterValue) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
+        const expiresCell = row.querySelector('td:nth-child(6)');
+        if (expiresCell) {
+            const expiresText = expiresCell.textContent;
+            if (expiresText !== 'Never' && expiresText !== 'Expired') {
+                const expiresDate = new Date(expiresText);
+                if (expiresDate < now) {
+                    expiresCell.textContent = 'Expired';
+                    expiresCell.classList.add('expired');
+                }
+            }
         }
     });
 }
 
-// Add event listeners for search
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('.search-box input');
+// Table sorting functionality
+function sortTable(column) {
+    const table = document.querySelector('.api-keys-table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
     
-    searchInput.addEventListener('input', searchKeys);
+    // Get current sort direction from the header
+    const header = table.querySelector(`th:nth-child(${column === 'expires' ? 6 : 7})`);
+    const sortIcon = header.querySelector('.sort-icon');
+    const isAscending = sortIcon.textContent === '↑';
     
-    // Update expired states on page load
-    updateExpiredStates();
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    // Escape key to close modal
-    if (e.key === 'Escape') {
-        const modal = document.getElementById('createKeyModal');
-        if (modal.classList.contains('show')) {
-            closeCreateKeyModal();
+    // Toggle sort direction
+    const newDirection = isAscending ? 'desc' : 'asc';
+    sortIcon.textContent = newDirection === 'asc' ? '↑' : '↓';
+    
+    // Sort rows
+    rows.sort((a, b) => {
+        let aValue = a.cells[column === 'expires' ? 5 : 6].textContent;
+        let bValue = b.cells[column === 'expires' ? 5 : 6].textContent;
+        
+        // Handle date sorting
+        if (aValue === 'Never') aValue = new Date('9999-12-31');
+        else if (aValue === 'Expired') aValue = new Date('1900-01-01');
+        else aValue = new Date(aValue);
+        
+        if (bValue === 'Never') bValue = new Date('9999-12-31');
+        else if (bValue === 'Expired') bValue = new Date('1900-01-01');
+        else bValue = new Date(bValue);
+        
+        if (newDirection === 'asc') {
+            return aValue - bValue;
+        } else {
+            return bValue - aValue;
         }
-    }
+    });
     
-    // Ctrl/Cmd + K to open create key modal
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        openCreateKeyModal();
-    }
-});
+    // Re-append sorted rows
+    rows.forEach(row => tbody.appendChild(row));
+}
 
 // API Key Copy Functionality
 function copyApiKey(apiKey, element) {
@@ -654,3 +408,70 @@ function formatRelativeTime(date) {
         return `${days} days ago`;
     }
 }
+
+// Close modal when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    const createKeyModal = document.getElementById('createKeyModal');
+    if (createKeyModal) {
+        createKeyModal.addEventListener('click', function(e) {
+            if (e.target === createKeyModal) {
+                closeCreateKeyModal();
+            }
+        });
+    }
+
+    // Handle form submission
+    const createKeyForm = document.getElementById('createKeyForm');
+    if (createKeyForm) {
+        createKeyForm.addEventListener('submit', handleFormSubmission);
+        
+        // Also handle submit button click as backup
+        const submitBtn = createKeyForm.querySelector('button[type="submit"]');
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleFormSubmission(e);
+        });
+    }
+    
+    // Close multiselect dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        const multiselectContainer = document.querySelector('.multiselect-container');
+        if (multiselectContainer && !multiselectContainer.contains(e.target)) {
+            const dropdown = document.getElementById('scopeDropdown');
+            const display = document.querySelector('.multiselect-display');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+            }
+        }
+    });
+});
+
+// Add event listeners for search
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.search-box input');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', searchKeys);
+    }
+    
+    // Update expired states on page load
+    updateExpiredStates();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Escape key to close modal
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('createKeyModal');
+        if (modal.classList.contains('show')) {
+            closeCreateKeyModal();
+        }
+    }
+    
+    // Ctrl/Cmd + K to open create key modal
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openCreateKeyModal();
+    }
+});

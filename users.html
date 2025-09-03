@@ -6,6 +6,122 @@
     <title>Super Admin - User Management</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Toaster Styles */
+        .toaster {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            pointer-events: auto;
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.success .toast-icon {
+            color: #10b981;
+        }
+
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+
+        .toast.info .toast-icon {
+            color: #3b82f6;
+        }
+
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast.warning .toast-icon {
+            color: #f59e0b;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.error .toast-icon {
+            color: #ef4444;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .toast-close:hover {
+            color: #6b7280;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .toast.removing {
+            animation: slideOut 0.3s ease-in;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -80,18 +196,26 @@
         <div class="search-filter-bar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search users by name, email, or organization...">
+                <input type="text" placeholder="Search users by name, email, or partner...">
             </div>
-            <div class="filter-dropdown">
-                <i class="fas fa-filter"></i>
-                <select>
-                    <option>All Users</option>
-                    <option>Super Admins</option>
-                    <option>Partners</option>
-                    <option>BoldTrail Users</option>
-                </select>
-                <i class="fas fa-chevron-down"></i>
+            <div class="dropdown-container">
+                <button class="dropdown-btn filter-dropdown" onclick="toggleFilterDropdown()">
+                    <span>All Users</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" id="filterDropdown">
+                    <div class="dropdown-item" data-value="all">All Users</div>
+                    <div class="dropdown-item" data-value="super-admin">Super Admins</div>
+                    <div class="dropdown-item" data-value="boldtrail">BoldTrail Users</div>
+                    <div class="dropdown-item" data-value="partners">Partners</div>
+                    <div class="dropdown-item" data-value="active">Active Only</div>
+                    <div class="dropdown-item" data-value="inactive">Inactive Only</div>
+                </div>
             </div>
+            <button class="btn-primary" onclick="openAddUserModal()">
+                <i class="fas fa-plus"></i>
+                Add User
+            </button>
         </div>
 
         <!-- Users Table -->
@@ -101,7 +225,7 @@
                     <tr>
                         <th>USER</th>
                         <th>TYPE</th>
-                        <th>ORGANIZATION</th>
+                        <th>PARTNER</th>
                         <th>STATUS</th>
                         <th>LAST LOGIN</th>
                         <th>ACTIONS</th>
@@ -144,9 +268,6 @@
                                 <button class="btn-icon" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn-icon" title="More options">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
                             </div>
                         </td>
                     </tr>
@@ -185,9 +306,6 @@
                                 </button>
                                 <button class="btn-icon" title="Delete">
                                     <i class="fas fa-trash"></i>
-                                </button>
-                                <button class="btn-icon" title="More options">
-                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
                             </div>
                         </td>
@@ -228,9 +346,6 @@
                                 <button class="btn-icon" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn-icon" title="More options">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
                             </div>
                         </td>
                     </tr>
@@ -270,9 +385,49 @@
                                 <button class="btn-icon" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn-icon" title="More options">
-                                    <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Alex Chen</div>
+                                    <div class="user-email">alex@newstartup.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge partner">Partner</span>
+                        </td>
+                        <td>
+                            <div class="organization-info">
+                                <i class="fas fa-building"></i>
+                                <span>New Startup Inc</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge inactive">
+                                <i class="fas fa-user"></i>
+                                inactive
+                            </span>
+                        </td>
+                        <td>Never</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" title="Edit">
+                                    <i class="fas fa-edit"></i>
                                 </button>
+                                <button class="btn-icon" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon btn-resend-invite" title="Resend Invite" onclick="resendInvite('alex@newstartup.com')">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+
                             </div>
                         </td>
                     </tr>
@@ -280,27 +435,310 @@
             </table>
         </div>
 
-        <!-- Summary Cards -->
-        <div class="summary-cards">
-            <div class="summary-card">
-                <div class="card-number">4</div>
-                <div class="card-label">Total Users</div>
+        <!-- Pagination -->
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing 1-4 of 4 results
             </div>
-            <div class="summary-card">
-                <div class="card-number">3</div>
-                <div class="card-label">Active Users</div>
-            </div>
-            <div class="summary-card">
-                <div class="card-number">1</div>
-                <div class="card-label">Super Admins</div>
-            </div>
-            <div class="summary-card">
-                <div class="card-number">2</div>
-                <div class="card-label">Partners</div>
+            <div class="pagination-controls">
+                <div class="rows-per-page">
+                    <span>Rows per page:</span>
+                    <select class="rows-select">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                </div>
+                <div class="page-numbers">
+                    <button class="page-nav" disabled>‹ Previous</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-nav" disabled>Next ›</button>
+                </div>
             </div>
         </div>
     </main>
 
+    <!-- Toaster Container -->
+    <div id="toaster" class="toaster"></div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Invite New User</h2>
+                <button class="close-btn" onclick="closeAddUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="firstName">First Name*</label>
+                    <input type="text" id="firstName" placeholder="Enter first name" required>
+                    <div class="error-message" id="firstNameError">First name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name*</label>
+                    <input type="text" id="lastName" placeholder="Enter last name" required>
+                    <div class="error-message" id="lastNameError">Last name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">Email*</label>
+                    <input type="email" id="userEmail" placeholder="Enter email address" required>
+                    <div class="error-message" id="userEmailError">Email is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userVendor">Partner*</label>
+                    <select id="userVendor" required>
+                        <option value="">Select a partner...</option>
+                        <option value="sisu">Sisu</option>
+                        <option value="shilo">Shilo</option>
+                        <option value="boldtrail-dev">BoldTrail Development</option>
+                    </select>
+                    <div class="error-message" id="userVendorError">Partner is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userAdmin">Admin Access</label>
+                    <div class="admin-checkbox-container">
+                        <input type="checkbox" id="userAdmin" name="userAdmin">
+                        <label for="userAdmin" class="admin-label">
+                            Admin (Note: BoldTrail Development admins become Super Admins)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Send Invite</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Add User Modal functionality
+        function openAddUserModal() {
+            const modal = document.getElementById('addUserModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAddUserModal() {
+            const modal = document.getElementById('addUserModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            resetAddUserForm();
+        }
+
+        function resetAddUserForm() {
+            document.getElementById('addUserForm').reset();
+            clearAddUserErrors();
+        }
+
+        function clearAddUserErrors() {
+            const errorElements = document.querySelectorAll('#addUserForm .error-message');
+            errorElements.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
+        // Filter dropdown functionality
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            const isOpen = dropdown.classList.contains('show');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            
+            // Toggle current dropdown
+            if (!isOpen) {
+                dropdown.classList.add('show');
+            }
+        }
+
+        // Global dropdown item selection handler for users page
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('dropdown-item')) {
+                const dropdown = e.target.closest('.dropdown-menu');
+                const dropdownBtn = dropdown.previousElementSibling;
+                const selectedValue = e.target.dataset.value;
+                const selectedText = e.target.textContent;
+                
+                // Get previous value for comparison
+                const previousText = dropdownBtn.querySelector('span').textContent;
+                
+                // Update button text
+                const span = dropdownBtn.querySelector('span');
+                if (span) {
+                    span.textContent = selectedText;
+                }
+                
+                // Handle filter dropdown selection
+                if (dropdownBtn.classList.contains('filter-dropdown')) {
+                    console.log('Filter changed from', previousText, 'to', selectedText);
+                    // Here you would implement the actual filtering logic
+                    // For now, just update the button text
+                }
+                
+                // Close dropdown
+                dropdown.classList.remove('show');
+            }
+            
+            // Close dropdowns when clicking outside
+            if (!e.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Handle Add User form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const addUserForm = document.getElementById('addUserForm');
+            if (addUserForm) {
+                addUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleAddUserSubmission(e);
+                });
+            }
+
+            // Close modal on outside click
+            const addUserModal = document.getElementById('addUserModal');
+            if (addUserModal) {
+                addUserModal.addEventListener('click', function(e) {
+                    if (e.target === addUserModal) {
+                        closeAddUserModal();
+                    }
+                });
+            }
+
+            // Close modal on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeAddUserModal();
+                }
+            });
+        });
+
+        function handleAddUserSubmission(e) {
+            console.log('Add User form submission triggered');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Clear previous errors
+            clearAddUserErrors();
+            
+            const userData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('userEmail').value.trim(),
+                partner: document.getElementById('userVendor').value,
+                isAdmin: document.getElementById('userAdmin').checked
+            };
+            
+            let hasErrors = false;
+            
+            // Validate form
+            if (!userData.firstName) {
+                showError('firstNameError', 'firstName');
+                hasErrors = true;
+            }
+            
+            if (!userData.lastName) {
+                showError('lastNameError', 'lastName');
+                hasErrors = true;
+            }
+            
+            if (!userData.email) {
+                showError('userEmailError', 'userEmail');
+                showError('userEmailError', 'userEmail');
+                hasErrors = true;
+            }
+            
+            if (!userData.partner) {
+                showError('userVendorError', 'userVendor');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                // Handle successful submission
+                console.log('User data:', userData);
+                // Here you would typically send the data to your backend
+                showToast('success', 'Invite Sent', 'User invitation has been sent successfully!', 4000);
+                closeAddUserModal();
+            }
+        }
+
+        function showError(errorId, fieldId) {
+            const errorElement = document.getElementById(errorId);
+            const fieldElement = document.getElementById(fieldId);
+            
+            if (errorElement) {
+                errorElement.style.display = 'block';
+            }
+            
+            if (fieldElement) {
+                fieldElement.classList.add('error');
+            }
+        }
+
+        // Toaster functionality
+        function showToast(type, title, message, duration = 4000) {
+            const toaster = document.getElementById('toaster');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconMap = {
+                success: 'fas fa-check-circle',
+                info: 'fas fa-info-circle',
+                warning: 'fas fa-exclamation-triangle',
+                error: 'fas fa-times-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="toast-icon ${iconMap[type]}"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="removeToast(this.parentElement)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toaster.appendChild(toast);
+            
+            // Auto remove after duration
+            setTimeout(() => {
+                removeToast(toast);
+            }, duration);
+        }
+
+        function removeToast(toast) {
+            if (toast && toast.parentElement) {
+                toast.classList.add('removing');
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.parentElement.removeChild(toast);
+                    }
+                }, 300);
+            }
+        }
+
+        // Resend invite functionality
+        function resendInvite(email) {
+            console.log('Resending invite to:', email);
+            // Here you would typically call your backend API to resend the invite
+            showToast('success', 'Invite Resent', `Invitation has been resent to ${email}`, 4000);
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
