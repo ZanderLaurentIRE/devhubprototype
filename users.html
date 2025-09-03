@@ -493,12 +493,22 @@
 
                 <div class="form-group">
                     <label for="userVendor">Partner*</label>
-                    <select id="userVendor" required>
-                        <option value="">Select a partner...</option>
-                        <option value="sisu">Sisu</option>
-                        <option value="shilo">Shilo</option>
-                        <option value="boldtrail-dev">BoldTrail Development</option>
-                    </select>
+                    <div class="searchable-dropdown-container">
+                        <div class="searchable-dropdown-display" onclick="toggleUserPartnerDropdown()">
+                            <span id="userPartnerDisplay">Select a partner...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="searchable-dropdown-menu" id="userPartnerDropdown">
+                            <div class="searchable-dropdown-search">
+                                <input type="text" id="userPartnerSearch" placeholder="Search partners..." oninput="filterUserPartners()">
+                            </div>
+                            <div class="searchable-dropdown-options">
+                                <div class="searchable-dropdown-option" data-value="sisu" onclick="selectUserPartner('sisu', 'Sisu')">Sisu</div>
+                                <div class="searchable-dropdown-option" data-value="shilo" onclick="selectUserPartner('shilo', 'Shilo')">Shilo</div>
+                                <div class="searchable-dropdown-option" data-value="boldtrail-dev" onclick="selectUserPartner('boldtrail-dev', 'BoldTrail Development')">BoldTrail Development</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="error-message" id="userVendorError">Partner is required</div>
                 </div>
 
@@ -538,6 +548,13 @@
         function resetAddUserForm() {
             document.getElementById('addUserForm').reset();
             clearAddUserErrors();
+            
+            // Reset partner selection
+            const partnerDisplay = document.getElementById('userPartnerDisplay');
+            if (partnerDisplay) {
+                partnerDisplay.textContent = 'Select a partner...';
+            }
+            window.selectedUserPartnerValue = undefined;
         }
 
         function clearAddUserErrors() {
@@ -561,6 +578,52 @@
             if (!isOpen) {
                 dropdown.classList.add('show');
             }
+        }
+
+        // User Partner Dropdown functionality
+        function toggleUserPartnerDropdown() {
+            const dropdown = document.getElementById('userPartnerDropdown');
+            const display = document.querySelector('#addUserModal .searchable-dropdown-display');
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+                // Clear search when closing
+                document.getElementById('userPartnerSearch').value = '';
+                filterUserPartners();
+            } else {
+                dropdown.classList.add('show');
+                display.classList.add('open');
+                // Focus on search input when opening
+                setTimeout(() => {
+                    document.getElementById('userPartnerSearch').focus();
+                }, 100);
+            }
+        }
+
+        function selectUserPartner(value, displayText) {
+            const display = document.getElementById('userPartnerDisplay');
+            display.textContent = displayText;
+            
+            // Close dropdown
+            toggleUserPartnerDropdown();
+            
+            // Store the selected value for form submission
+            window.selectedUserPartnerValue = value;
+        }
+
+        function filterUserPartners() {
+            const searchTerm = document.getElementById('userPartnerSearch').value.toLowerCase();
+            const options = document.querySelectorAll('#userPartnerDropdown .searchable-dropdown-option');
+            
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
         }
 
         // Global dropdown item selection handler for users page
@@ -597,6 +660,20 @@
                     menu.classList.remove('show');
                 });
             }
+            
+            // Close user partner dropdown when clicking outside
+            const userPartnerContainer = document.querySelector('#addUserModal .searchable-dropdown-container');
+            if (userPartnerContainer && !userPartnerContainer.contains(e.target)) {
+                const dropdown = document.getElementById('userPartnerDropdown');
+                const display = document.querySelector('#addUserModal .searchable-dropdown-display');
+                if (dropdown && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                    display.classList.remove('open');
+                    // Clear search when closing
+                    document.getElementById('userPartnerSearch').value = '';
+                    filterUserPartners();
+                }
+            }
         });
 
         // Handle Add User form submission
@@ -627,6 +704,13 @@
             });
         });
 
+        function showError(errorId, fieldId) {
+            const errorElement = document.getElementById(errorId);
+            if (errorElement) {
+                errorElement.style.display = 'block';
+            }
+        }
+
         function handleAddUserSubmission(e) {
             console.log('Add User form submission triggered');
             e.preventDefault();
@@ -639,7 +723,7 @@
                 firstName: document.getElementById('firstName').value.trim(),
                 lastName: document.getElementById('lastName').value.trim(),
                 email: document.getElementById('userEmail').value.trim(),
-                partner: document.getElementById('userVendor').value,
+                partner: window.selectedUserPartnerValue,
                 isAdmin: document.getElementById('userAdmin').checked
             };
             
@@ -657,7 +741,6 @@
             }
             
             if (!userData.email) {
-                showError('userEmailError', 'userEmail');
                 showError('userEmailError', 'userEmail');
                 hasErrors = true;
             }

@@ -81,9 +81,6 @@
                 <i class="fas fa-plus"></i>
                 Create Key
             </button>
-            <button class="btn-secondary" onclick="testJavaScript()" style="margin-left: 10px;">
-                Test JS
-            </button>
         </div>
 
         <!-- API Keys Table -->
@@ -283,12 +280,22 @@
 
                 <div class="form-group">
                     <label for="vendorSelect">Partner*</label>
-                    <select id="vendorSelect" name="vendor">
-                        <option value="">Select a partner...</option>
-                        <option value="sisu">Sisu</option>
-                        <option value="boldtrail-dev">BoldTrail Development</option>
-                        <option value="shilo">Shilo</option>
-                    </select>
+                    <div class="searchable-dropdown-container">
+                        <div class="searchable-dropdown-display" onclick="togglePartnerDropdown()">
+                            <span id="partnerDisplay">Select a partner...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="searchable-dropdown-menu" id="partnerDropdown">
+                            <div class="searchable-dropdown-search">
+                                <input type="text" id="partnerSearch" placeholder="Search partners..." oninput="filterPartners()">
+                            </div>
+                            <div class="searchable-dropdown-options">
+                                <div class="searchable-dropdown-option" data-value="sisu" onclick="selectPartner('sisu', 'Sisu')">Sisu</div>
+                                <div class="searchable-dropdown-option" data-value="boldtrail-dev" onclick="selectPartner('boldtrail-dev', 'BoldTrail Development')">BoldTrail Development</div>
+                                <div class="searchable-dropdown-option" data-value="shilo" onclick="selectPartner('shilo', 'Shilo')">Shilo</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="error-message" id="vendorError">Partner is required</div>
                 </div>
 

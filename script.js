@@ -1,19 +1,4 @@
-// Test function to verify JavaScript is working
-function testJavaScript() {
-    alert('JavaScript is working!');
-    console.log('JavaScript test function called');
-    
-    // Test if other functions exist
-    console.log('openCreateKeyModal exists:', typeof openCreateKeyModal);
-    console.log('copyApiKey exists:', typeof copyApiKey);
-    console.log('refreshApiKey exists:', typeof refreshApiKey);
-    console.log('deleteApiKey exists:', typeof deleteApiKey);
-    
-    // Test if elements exist
-    console.log('createKeyModal exists:', document.getElementById('createKeyModal'));
-    console.log('scopeSelect exists:', document.getElementById('scopeSelect'));
-    console.log('permissionsGrid exists:', document.getElementById('permissionsGrid'));
-}
+
 
 // Modal functionality
 function openCreateKeyModal() {
@@ -53,6 +38,13 @@ function resetForm() {
             display.textContent = 'Select scopes...';
         }
         
+        // Reset partner selection
+        const partnerDisplay = document.getElementById('partnerDisplay');
+        if (partnerDisplay) {
+            partnerDisplay.textContent = 'Select a partner...';
+        }
+        window.selectedPartnerValue = undefined;
+        
         // Clear permissions
         const permissionsGrid = document.getElementById('permissionsGrid');
         if (permissionsGrid) {
@@ -76,9 +68,12 @@ function handleFormSubmission(e) {
         selectedScopes.push(checkbox.value);
     });
     
+    // Get selected partner value
+    const selectedPartner = window.selectedPartnerValue;
+    
     // Validate required fields
-    if (!keyName || !vendor || !userEmail || selectedScopes.length === 0) {
-        alert('Please fill in all required fields including at least one scope');
+    if (!keyName || !selectedPartner || !userEmail || selectedScopes.length === 0) {
+        alert('Please fill in all required fields including partner and at least one scope');
         return;
     }
     
@@ -97,7 +92,7 @@ function handleFormSubmission(e) {
     // Here you would typically send the data to your backend
     console.log('API Key Data:', {
         keyName,
-        vendor,
+        partner: selectedPartner,
         userEmail,
         scopes: selectedScopes,
         permissions: selectedPermissions
@@ -197,6 +192,54 @@ const permissionsData = {
         { resource: 'tasks', verb: 'write', label: 'tasks:write' }
     ]
 };
+
+// Searchable dropdown functionality
+function togglePartnerDropdown() {
+    const dropdown = document.getElementById('partnerDropdown');
+    const display = document.querySelector('.searchable-dropdown-display');
+    
+    if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+        display.classList.remove('open');
+        // Clear search when closing
+        document.getElementById('partnerSearch').value = '';
+        filterPartners();
+    } else {
+        dropdown.classList.add('show');
+        display.classList.add('open');
+        // Focus on search input when opening
+        setTimeout(() => {
+            document.getElementById('partnerSearch').focus();
+        }, 100);
+    }
+}
+
+function selectPartner(value, displayText) {
+    const display = document.getElementById('partnerDisplay');
+    display.textContent = displayText;
+    
+    // Close dropdown
+    togglePartnerDropdown();
+    
+    // Store the selected value for form submission
+    window.selectedPartnerValue = value;
+}
+
+function filterPartners() {
+    const searchTerm = document.getElementById('partnerSearch').value.toLowerCase();
+    const options = document.querySelectorAll('.searchable-dropdown-option');
+    
+    options.forEach(option => {
+        const text = option.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            option.classList.remove('hidden');
+        } else {
+            option.classList.add('hidden');
+        }
+    });
+}
+
+
 
 // Multiselect functionality
 function toggleMultiselect() {
@@ -442,6 +485,20 @@ document.addEventListener('DOMContentLoaded', function() {
             if (dropdown && dropdown.classList.contains('show')) {
                 dropdown.classList.remove('show');
                 display.classList.remove('open');
+            }
+        }
+        
+        // Close partner dropdown when clicking outside
+        const partnerContainer = document.querySelector('.searchable-dropdown-container');
+        if (partnerContainer && !partnerContainer.contains(e.target)) {
+            const dropdown = document.getElementById('partnerDropdown');
+            const display = document.querySelector('.searchable-dropdown-display');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+                // Clear search when closing
+                document.getElementById('partnerSearch').value = '';
+                filterPartners();
             }
         }
     });
