@@ -6,6 +6,258 @@
     <title>Super Admin - Partner Applications</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Toaster Styles */
+        .toaster {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            pointer-events: auto;
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.success .toast-icon {
+            color: #10b981;
+        }
+
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+
+        .toast.info .toast-icon {
+            color: #3b82f6;
+        }
+
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast.warning .toast-icon {
+            color: #f59e0b;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.error .toast-icon {
+            color: #ef4444;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .toast-close:hover {
+            color: #6b7280;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .application-modal {
+            max-width: 900px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 24px 24px 0 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .modal-title p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #111827;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        /* Dropdown styles */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .dropdown-btn:hover {
+            border-color: #9ca3af;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1001;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            display: none;
+            margin-top: 2px;
+            padding: 4px 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: white;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f9fafb;
+            color: #111827;
+        }
+
+        /* Welcome email button states */
+        .btn-welcome-email {
+            transition: all 0.2s;
+        }
+
+        .btn-welcome-email.disabled {
+            background-color: #9ca3af !important;
+            color: #6b7280 !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+
+        .btn-welcome-email.disabled:hover {
+            background-color: #9ca3af !important;
+            color: #6b7280 !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -74,7 +326,6 @@
         <div class="page-header">
             <h1>Partner Applications</h1>
             <p>Review and manage partnership applications</p>
-            <button onclick="testToast()" style="margin-top: 10px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">Test Toast</button>
         </div>
 
         <!-- Summary Cards -->
@@ -319,6 +570,9 @@
         </div>
     </main>
 
+    <!-- Toaster Container -->
+    <div id="toaster" class="toaster"></div>
+
     <!-- Partnership Application Details Modal -->
     <div id="applicationModal" class="modal">
         <div class="modal-content application-modal">
@@ -405,66 +659,29 @@
                         </div>
                         <div class="info-item">
                             <i class="fas fa-envelope"></i>
-                            <a href="mailto:test@itest.com">test@itest.com</a>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-id-badge"></i>
-                            <span>King of the devs</span>
+                            <span>test@test.com</span>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-phone"></i>
-                            <span>7015558383</span>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>San Francisco, CA</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Technical Information -->
+                <!-- Application Details -->
                 <div class="info-section">
-                    <h3>Technical Information</h3>
+                    <h3>Application Details</h3>
                     <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-lightbulb"></i>
-                            <span><strong>Primary Use Case:</strong> Test</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-chart-line"></i>
-                            <span><strong>Calls/Volume:</strong> 10k-100k calls</span>
-                        </div>
                         <div class="info-item">
                             <i class="fas fa-calendar"></i>
-                            <span><strong>Timeline:</strong> 1-3months</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-dollar-sign"></i>
-                            <span><strong>Budget/Value:</strong> $1m-5m</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-code"></i>
-                            <span><strong>Technology Stack:</strong> All stacks</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-bullseye"></i>
-                            <span><strong>Target Market:</strong> Test</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-headset"></i>
-                            <span><strong>Support Needs:</strong> Build it</span>
-                        </div>
-                    </div>
-                </div>
-
-                
-
-                <!-- Application Timeline -->
-                <div class="info-section">
-                    <h3>Application Timeline</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-paper-plane"></i>
                             <span><strong>Submitted:</strong> Aug 18, 2025, 11:41 AM</span>
                         </div>
                         <div class="info-item">
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-clock"></i>
                             <span><strong>Last Updated:</strong> Aug 18, 2025, 11:41 AM</span>
                         </div>
                         <div class="info-item">
@@ -477,327 +694,178 @@
         </div>
     </div>
 
-    <!-- Toaster Container -->
-    <div id="toaster" class="toaster"></div>
-
-    <script src="script.js"></script>
     <script>
-        // Global functions for dropdowns and modals
-        function toggleDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            const isOpen = dropdown.classList.contains('show');
-            
-            // Close all dropdowns
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.classList.remove('show');
-            });
-            
-            // Toggle current dropdown
-            if (!isOpen) {
-                dropdown.classList.add('show');
-            }
-        }
-
+        // Modal functionality
         function openApplicationModal() {
+            console.log('openApplicationModal called');
             const modal = document.getElementById('applicationModal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
+            console.log('Modal element:', modal);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                console.log('Modal opened successfully');
+            } else {
+                console.error('Modal not found!');
+            }
         }
 
         function closeApplicationModal() {
             const modal = document.getElementById('applicationModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        function updateDropdownStyling(button, value) {
-            // Remove all existing classes
-            button.className = 'dropdown-btn';
-            
-            if (button.classList.contains('status-dropdown')) {
-                button.classList.add('status-dropdown');
-                button.classList.add(`status-${value}`);
-            } else if (button.classList.contains('tier-dropdown')) {
-                button.classList.add('tier-dropdown');
-                button.classList.add(`tier-${value}`);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
             }
         }
 
-        // Toaster functionality
-        window.showToast = function(type, title, message, duration = 4000) {
-            console.log('showToast called with:', type, title, message);
+        // Dropdown functionality
+        function toggleDropdown(dropdownId) {
+            console.log('toggleDropdown called with:', dropdownId);
+            const dropdown = document.getElementById(dropdownId);
+            console.log('Dropdown element:', dropdown);
+            
+            if (dropdown) {
+                // Close all other dropdowns first
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu.id !== dropdownId) {
+                        menu.classList.remove('show');
+                    }
+                });
+                
+                // Toggle current dropdown
+                dropdown.classList.toggle('show');
+                console.log('Dropdown toggled, show class:', dropdown.classList.contains('show'));
+                
+                // Log dropdown items for debugging
+                const items = dropdown.querySelectorAll('.dropdown-item');
+                console.log('Dropdown items found:', items.length);
+                items.forEach((item, index) => {
+                    console.log(`Item ${index}:`, item.textContent, item.style.color, item.style.backgroundColor);
+                });
+            } else {
+                console.error('Dropdown not found:', dropdownId);
+            }
+        }
+
+        // Toast functionality
+        function showToast(type, title, message, duration = 3000) {
             const toaster = document.getElementById('toaster');
-            console.log('Toaster element:', toaster);
+            if (!toaster) return;
+            
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
-            const iconMap = {
-                success: 'fas fa-check-circle',
-                info: 'fas fa-info-circle',
-                warning: 'fas fa-exclamation-triangle',
-                error: 'fas fa-times-circle'
-            };
-            
             toast.innerHTML = `
-                <i class="toast-icon ${iconMap[type]}"></i>
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
                 <div class="toast-content">
                     <div class="toast-title">${title}</div>
                     <div class="toast-message">${message}</div>
                 </div>
-                <button class="toast-close" onclick="removeToast(this.parentElement)">
+                <button class="toast-close" onclick="this.parentElement.remove()">
                     <i class="fas fa-times"></i>
                 </button>
             `;
             
             toaster.appendChild(toast);
             
-            // Auto remove after duration
+            // Auto-remove after duration
             setTimeout(() => {
-                removeToast(toast);
+                if (toast.parentElement) {
+                    toast.remove();
+                }
             }, duration);
-        };
-
-        window.removeToast = function(toast) {
-            if (toast && toast.parentElement) {
-                toast.classList.add('removing');
-                setTimeout(() => {
-                    if (toast.parentElement) {
-                        toast.parentElement.removeChild(toast);
-                    }
-                }, 300);
-            }
-        };
-
-        // Test function to verify toaster works
-        window.testToast = function() {
-            console.log('Test toast function called');
-            window.showToast('success', 'Test Toast', 'This is a test toast notification!', 3000);
-        };
-
-        // Scope dropdown functionality
-        window.toggleScopeDropdown = function() {
-            const dropdown = document.getElementById('scopeDropdown');
-            const isOpen = dropdown.classList.contains('show');
-            
-            // Close all dropdowns
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.classList.remove('show');
-            });
-            
-            // Toggle current dropdown
-            if (!isOpen) {
-                dropdown.classList.add('show');
-            }
-        };
-
-        // Permissions data structure
-        const permissionsData = {
-            platform: [
-                { resource: 'users', verb: 'read', label: 'users:read' },
-                { resource: 'users', verb: 'write', label: 'users:write' },
-                { resource: 'users', verb: 'delete', label: 'users:delete' },
-                { resource: 'organizations', verb: 'read', label: 'organizations:read' },
-                { resource: 'organizations', verb: 'write', label: 'organizations:write' },
-                { resource: 'workspaces', verb: 'read', label: 'workspaces:read' },
-                { resource: 'workspaces', verb: 'write', label: 'workspaces:write' },
-                { resource: 'settings', verb: 'read', label: 'settings:read' },
-                { resource: 'settings', verb: 'write', label: 'settings:write' }
-            ],
-            crm: [
-                { resource: 'contacts', verb: 'read', label: 'contacts:read' },
-                { resource: 'contacts', verb: 'write', label: 'contacts:write' },
-                { resource: 'contacts', verb: 'delete', label: 'contacts:delete' },
-                { resource: 'leads', verb: 'read', label: 'leads:read' },
-                { resource: 'leads', verb: 'write', label: 'leads:write' },
-                { resource: 'deals', verb: 'read', label: 'deals:read' },
-                { resource: 'deals', verb: 'write', label: 'deals:write' },
-                { resource: 'tasks', verb: 'read', label: 'tasks:read' },
-                { resource: 'tasks', verb: 'write', label: 'tasks:write' }
-            ]
-        };
-
-        // Update permissions based on scope selection
-        function updatePermissions(scope) {
-            const permissionsGrid = document.getElementById('permissionsGrid');
-            const permissions = permissionsData[scope] || [];
-            
-            permissionsGrid.innerHTML = permissions.map(permission => `
-                <div class="permission-tag" data-resource="${permission.resource}" data-verb="${permission.verb}">
-                    <input type="checkbox" id="perm_${permission.resource}_${permission.verb}" class="permission-checkbox">
-                    <label for="perm_${permission.resource}_${permission.verb}">${permission.label}</label>
-                </div>
-            `).join('');
         }
 
-        // Select all permissions
-        window.selectAllPermissions = function() {
-            const checkboxes = document.querySelectorAll('.permission-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = true;
-            });
-        };
+        // Test function
+        function testModal() {
+            console.log('Test button clicked');
+            openApplicationModal();
+        }
 
-        // Select no permissions
-        window.selectNoPermissions = function() {
-            const checkboxes = document.querySelectorAll('.permission-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = false;
-            });
-        };
+        // Make functions globally available
+        window.showToast = showToast;
+        window.openApplicationModal = openApplicationModal;
+        window.closeApplicationModal = closeApplicationModal;
+        window.testModal = testModal;
 
-        // Global dropdown item selection handler
-        document.addEventListener('click', function(e) {
-            console.log('Click event on:', e.target);
-            if (e.target.classList.contains('dropdown-item')) {
-                console.log('Dropdown item clicked:', e.target.textContent);
-                const dropdown = e.target.closest('.dropdown-menu');
-                const dropdownBtn = dropdown.previousElementSibling;
-                const selectedValue = e.target.dataset.value;
-                const selectedText = e.target.textContent;
-                
-                // Get previous value for comparison
-                const previousText = dropdownBtn.querySelector('span').textContent;
-                console.log('Previous text:', previousText, 'New text:', selectedText);
-                
-                // Update button text
-                const span = dropdownBtn.querySelector('span');
-                if (span) {
-                    span.textContent = selectedText;
-                }
-                
-                // Update button styling based on selection
-                updateDropdownStyling(dropdownBtn, selectedValue);
-                
-                // Show toast notification
-                if (dropdownBtn.classList.contains('status-dropdown')) {
-                    console.log('Showing status toast');
-                    window.showToast('success', 'Status Updated', `Status changed from ${previousText} to ${selectedText}`, 3000);
-                } else if (dropdownBtn.classList.contains('tier-dropdown')) {
-                    console.log('Showing tier toast');
-                    window.showToast('success', 'Tier Updated', `Tier changed from ${previousText} to ${selectedText}`, 3000);
-                } else if (dropdownBtn.classList.contains('scope-dropdown')) {
-                    console.log('Showing scope toast');
-                    window.showToast('success', 'Scope Updated', `Scope changed from ${previousText} to ${selectedText}`, 3000);
-                    // Update permissions based on new scope
-                    updatePermissions(selectedValue);
-                }
-                
-                // Close dropdown
-                dropdown.classList.remove('show');
-            }
-            
-            // Close dropdowns when clicking outside
-            if (!e.target.closest('.dropdown-container')) {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
-        });
-
-        // Partner Applications specific functionality
+        // Partner Applications functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Add sorting functionality
-            const headers = document.querySelectorAll('th[data-sort]');
-            let currentSort = { column: 'submitted', direction: 'desc' }; // Default sort
+            console.log('DOM loaded, setting up View button handlers');
             
-            headers.forEach(header => {
-                header.addEventListener('click', function() {
-                    const sortKey = this.dataset.sort;
-                    const arrow = this.querySelector('.sort-arrow');
-                    
-                    // Reset all arrows
-                    document.querySelectorAll('.sort-arrow').forEach(a => {
-                        a.className = 'sort-arrow';
-                    });
-                    
-                    // Determine sort direction
-                    let direction = 'asc';
-                    if (currentSort.column === sortKey) {
-                        // Toggle direction if clicking same column
-                        direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
-                    }
-                    
-                    // Update arrow classes
-                    arrow.className = `sort-arrow active ${direction}`;
-                    
-                    // Update current sort
-                    currentSort = { column: sortKey, direction: direction };
-                    
-                    // Sort the table
-                    sortTable(sortKey, direction);
+            // Add click handlers to all View buttons
+            const viewButtons = document.querySelectorAll('.btn-view');
+            console.log('Found View buttons:', viewButtons.length);
+            
+            viewButtons.forEach((button, index) => {
+                console.log(`Setting up button ${index}:`, button);
+                button.addEventListener('click', function(e) {
+                    console.log('View button clicked!', e);
+                    openApplicationModal();
                 });
             });
+
+            // Add click handlers to all Impersonate buttons
+            const impersonateButtons = document.querySelectorAll('.btn-impersonate');
+            console.log('Found Impersonate buttons:', impersonateButtons.length);
             
-            function sortTable(column, direction) {
-                const tbody = document.querySelector('tbody');
-                const rows = Array.from(tbody.querySelectorAll('tr'));
-                const columnIndex = Array.from(headers).findIndex(h => h.dataset.sort === column);
-                
-                rows.sort((a, b) => {
-                    let aValue = a.cells[columnIndex].textContent.trim();
-                    let bValue = b.cells[columnIndex].textContent.trim();
+            impersonateButtons.forEach((button, index) => {
+                console.log(`Setting up impersonate button ${index}:`, button);
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Impersonate button clicked!');
                     
-                    // Handle date sorting for Submitted column
-                    if (column === 'submitted') {
-                        aValue = new Date(aValue).getTime();
-                        bValue = new Date(bValue).getTime();
-                    }
+                    // Get partner data from the table row
+                    const row = button.closest('tr');
+                    const partnerData = {
+                        companyName: row.querySelector('.company-name')?.textContent || 'Unknown Company',
+                        contactName: row.querySelector('.contact-name')?.textContent || 'Unknown Contact',
+                        tier: row.querySelector('.tier-badge')?.textContent || 'Unknown Tier'
+                    };
                     
-                    // Handle tier sorting with custom order
-                    if (column === 'tier') {
-                        const tierOrder = { 'PLATINUM': 1, 'GOLD': 2, 'SILVER': 3, 'BRONZE': 4 };
-                        aValue = tierOrder[aValue.toUpperCase()] || 99;
-                        bValue = tierOrder[bValue.toUpperCase()] || 99;
-                    }
+                    console.log('Partner data extracted:', partnerData);
                     
-                    if (aValue < bValue) {
-                        return direction === 'asc' ? -1 : 1;
-                    }
-                    if (aValue > bValue) {
-                        return direction === 'asc' ? 1 : -1;
-                    }
-                    return 0;
+                    // Navigate to partner experience page
+                    window.location.href = 'partner-experience.html';
                 });
-                
-                // Re-append sorted rows
-                rows.forEach(row => tbody.appendChild(row));
-            }
+            });
 
-            // Search functionality
-            const searchInput = document.querySelector('.search-box input');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const rows = document.querySelectorAll('tbody tr');
+            // Handle dropdown item selection
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('dropdown-item')) {
+                    const dropdown = e.target.closest('.dropdown-menu');
+                    const dropdownBtn = dropdown.previousElementSibling;
+                    const selectedValue = e.target.dataset.value;
+                    const selectedText = e.target.textContent;
                     
-                    rows.forEach(row => {
-                        const companyName = row.querySelector('.company-name')?.textContent.toLowerCase() || '';
-                        const contactName = row.querySelector('.contact-name')?.textContent.toLowerCase() || '';
-                        const contactEmail = row.querySelector('.contact-email')?.textContent.toLowerCase() || '';
-                        
-                        const matches = companyName.includes(searchTerm) || 
-                                       contactName.includes(searchTerm) || 
-                                       contactEmail.includes(searchTerm);
-                        
-                        row.style.display = matches ? '' : 'none';
+                    // Update button text
+                    const span = dropdownBtn.querySelector('span');
+                    if (span) {
+                        span.textContent = selectedText;
+                    }
+                    
+                    // Close dropdown
+                    dropdown.classList.remove('show');
+                    
+                    // Show success toast for status/tier changes
+                    if (dropdown.id === 'statusDropdown' || dropdown.id === 'tierDropdown') {
+                        showToast('success', 'Status Updated', `${selectedText} status has been updated successfully!`, 3000);
+                    }
+                }
+                
+                // Close dropdowns when clicking outside
+                if (!e.target.closest('.dropdown-container')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('show');
                     });
-                });
-            }
+                }
+            });
 
-            // Filter functionality
-            const filterSelect = document.querySelector('.filter-dropdown select');
-            if (filterSelect) {
-                filterSelect.addEventListener('change', function() {
-                    const selectedStatus = this.value.toLowerCase();
-                    const rows = document.querySelectorAll('tbody tr');
-                    
-                    rows.forEach(row => {
-                        const status = row.querySelector('.status-badge')?.textContent.toLowerCase() || '';
-                        const matches = selectedStatus === 'all status' || status.includes(selectedStatus);
-                        row.style.display = matches ? '' : 'none';
-                    });
-                });
-            }
+            // Add click handler for welcome email button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-welcome-email')) {
+                    showToast('success', 'Welcome Email Sent', 'Welcome email has been sent to the partner successfully!', 4000);
+                }
+            });
 
             // Close modal on outside click
             document.addEventListener('click', function(e) {
@@ -812,20 +880,6 @@
                     closeApplicationModal();
                 }
             });
-
-            // Add click handlers to all View buttons
-            document.querySelectorAll('.btn-view').forEach(button => {
-                button.addEventListener('click', openApplicationModal);
-            });
-
-            // Add click handler for welcome email button
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.btn-welcome-email')) {
-                    window.showToast('success', 'Welcome Email Sent', 'Welcome email has been sent to the partner successfully!', 4000);
-                }
-            });
-
-
         });
     </script>
 </body>

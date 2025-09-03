@@ -121,6 +121,356 @@
         .toast.removing {
             animation: slideOut 0.3s ease-in;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #111827;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .error-message {
+            display: none;
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .admin-checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .admin-checkbox-container input[type="checkbox"] {
+            margin-top: 2px;
+        }
+
+        .admin-label {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* Searchable dropdown styles */
+        .searchable-dropdown-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .searchable-dropdown-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            min-height: 38px;
+        }
+
+        .searchable-dropdown-display:hover {
+            border-color: #9ca3af;
+        }
+
+        .searchable-dropdown-display.open {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .searchable-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            margin-top: 2px;
+            max-height: 300px;
+            overflow: hidden;
+        }
+
+        .searchable-dropdown-menu.show {
+            display: block;
+        }
+
+        .searchable-dropdown-search {
+            padding: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .searchable-dropdown-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .searchable-dropdown-search input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .searchable-dropdown-options {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .searchable-dropdown-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .searchable-dropdown-option:last-child {
+            border-bottom: none;
+        }
+
+        .searchable-dropdown-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .searchable-dropdown-option.hidden {
+            display: none;
+        }
+
+        /* User dropdown styles */
+        .user-dropdown-container {
+            position: relative;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .user-info:hover {
+            background-color: #f3f4f6;
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            min-width: 280px;
+            z-index: 1000;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .user-dropdown-menu.show {
+            display: block;
+        }
+
+        .user-dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .user-dropdown-header i {
+            color: #dc2626;
+            font-size: 20px;
+        }
+
+        .user-dropdown-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-dropdown-name {
+            font-weight: 600;
+            color: #111827;
+            font-size: 14px;
+        }
+
+        .user-dropdown-email {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .user-dropdown-role {
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .user-dropdown-separator {
+            height: 1px;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        .user-dropdown-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .user-dropdown-option:hover {
+            background-color: #f9fafb;
+        }
+
+        .user-dropdown-option i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .user-dropdown-option.sign-out {
+            color: #dc2626;
+        }
+
+        .user-dropdown-option.sign-out:hover {
+            background-color: #fef2f2;
+        }
     </style>
 </head>
 <body>
@@ -142,13 +492,30 @@
             <div class="header-actions">
                 <i class="fas fa-history"></i>
             </div>
-            <div class="user-info">
-                <i class="fas fa-shield-alt"></i>
-                <div class="user-details">
-                    <span>Super Admin</span>
-                    <span>Super Admin</span>
+            <div class="user-dropdown-container">
+                <div class="user-info" onclick="toggleUserDropdown()">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="user-details">
+                        <span>Super Admin</span>
+                        <span>Super Admin</span>
+                    </div>
+                    <i class="fas fa-chevron-down" id="userDropdownIcon"></i>
                 </div>
-                <i class="fas fa-chevron-down"></i>
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <div class="user-dropdown-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="user-dropdown-details">
+                            <span class="user-dropdown-name">Super Admin</span>
+                            <span class="user-dropdown-email">super@boldtrail.com</span>
+                            <span class="user-dropdown-role">Super Admin</span>
+                        </div>
+                    </div>
+                    <div class="user-dropdown-separator"></div>
+                    <div class="user-dropdown-option sign-out" onclick="signOut()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sign Out</span>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -462,6 +829,74 @@
     <!-- Toaster Container -->
     <div id="toaster" class="toaster"></div>
 
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit User</h2>
+                <button class="close-btn" onclick="closeEditUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="editUserForm">
+                <div class="form-group">
+                    <label for="editFirstName">First Name*</label>
+                    <input type="text" id="editFirstName" placeholder="Enter first name" required>
+                    <div class="error-message" id="editFirstNameError">First name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editLastName">Last Name*</label>
+                    <input type="text" id="editLastName" placeholder="Enter last name" required>
+                    <div class="error-message" id="editLastNameError">Last name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editUserEmail">Email*</label>
+                    <input type="email" id="editUserEmail" placeholder="Enter email address" required>
+                    <div class="error-message" id="editUserEmailError">Email is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editUserVendor">Partner*</label>
+                    <div class="searchable-dropdown-container">
+                        <div class="searchable-dropdown-display" onclick="toggleEditUserPartnerDropdown()">
+                            <span id="editUserPartnerDisplay">Select a partner...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="searchable-dropdown-menu" id="editUserPartnerDropdown">
+                            <div class="searchable-dropdown-search">
+                                <input type="text" id="editUserPartnerSearch" placeholder="Search partners..." oninput="filterEditUserPartners()">
+                            </div>
+                            <div class="searchable-dropdown-options">
+                                <div class="searchable-dropdown-option" data-value="sisu" onclick="selectEditUserPartner('sisu', 'Sisu')">Sisu</div>
+                                <div class="searchable-dropdown-option" data-value="shilo" onclick="selectEditUserPartner('shilo', 'Shilo')">Shilo</div>
+                                <div class="searchable-dropdown-option" data-value="boldtrail-dev" onclick="selectEditUserPartner('boldtrail-dev', 'BoldTrail Development')">BoldTrail Development</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="error-message" id="editUserVendorError">Partner is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editUserAdmin">Admin Access</label>
+                    <div class="admin-checkbox-container">
+                        <input type="checkbox" id="editUserAdmin" name="editUserAdmin">
+                        <label for="editUserAdmin" class="admin-label">
+                            Admin (Note: BoldTrail Development admins become Super Admins)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeEditUserModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Update User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Add User Modal -->
     <div id="addUserModal" class="modal">
         <div class="modal-content">
@@ -686,7 +1121,41 @@
                 });
             }
 
-            // Close modal on outside click
+            // Handle Edit User form submission
+            const editUserForm = document.getElementById('editUserForm');
+            if (editUserForm) {
+                editUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleEditUserSubmission(e);
+                });
+            }
+
+            // Add click handlers to all Edit buttons
+            const editButtons = document.querySelectorAll('.btn-icon[title="Edit"]');
+            console.log('Found Edit buttons:', editButtons.length);
+            
+            editButtons.forEach((button, index) => {
+                console.log(`Setting up edit button ${index}:`, button);
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Edit button clicked!');
+                    
+                    // Get user data from the table row
+                    const row = button.closest('tr');
+                    const userData = {
+                        firstName: row.querySelector('.user-name').textContent.split(' ')[0] || '',
+                        lastName: row.querySelector('.user-name').textContent.split(' ').slice(1).join(' ') || '',
+                        email: row.querySelector('.user-email').textContent || '',
+                        partner: row.querySelector('.organization-info span').textContent || '',
+                        isAdmin: row.querySelector('.user-type-badge')?.textContent.includes('SUPER ADMIN') || false
+                    };
+                    
+                    console.log('User data extracted:', userData);
+                    openEditUserModal(userData);
+                });
+            });
+
+            // Close modals on outside click
             const addUserModal = document.getElementById('addUserModal');
             if (addUserModal) {
                 addUserModal.addEventListener('click', function(e) {
@@ -696,18 +1165,236 @@
                 });
             }
 
-            // Close modal on escape key
+            const editUserModal = document.getElementById('editUserModal');
+            if (editUserModal) {
+                editUserModal.addEventListener('click', function(e) {
+                    if (e.target === editUserModal) {
+                        closeEditUserModal();
+                    }
+                });
+            }
+
+            // Close modals on escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeAddUserModal();
+                    closeEditUserModal();
                 }
             });
+
+                    // Close edit user partner dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const editUserPartnerContainer = document.querySelector('#editUserModal .searchable-dropdown-container');
+            if (editUserPartnerContainer && !editUserPartnerContainer.contains(e.target)) {
+                const dropdown = document.getElementById('editUserPartnerDropdown');
+                const display = document.querySelector('#editUserModal .searchable-dropdown-display');
+                if (dropdown && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                    display.classList.remove('open');
+                    // Clear search when closing
+                    document.getElementById('editUserPartnerSearch').value = '';
+                    filterEditUserPartners();
+                }
+            }
+
+            // Close user dropdown when clicking outside
+            const userDropdownContainer = document.querySelector('.user-dropdown-container');
+            if (userDropdownContainer && !userDropdownContainer.contains(e.target)) {
+                closeUserDropdown();
+            }
         });
+    });
+
+    // User dropdown functionality
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdownMenu');
+        const icon = document.getElementById('userDropdownIcon');
+        
+        if (dropdown.classList.contains('show')) {
+            closeUserDropdown();
+        } else {
+            openUserDropdown();
+        }
+    }
+
+    function openUserDropdown() {
+        const dropdown = document.getElementById('userDropdownMenu');
+        const icon = document.getElementById('userDropdownIcon');
+        
+        dropdown.classList.add('show');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    }
+
+    function closeUserDropdown() {
+        const dropdown = document.getElementById('userDropdownMenu');
+        const icon = document.getElementById('userDropdownIcon');
+        
+        dropdown.classList.remove('show');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+
+
+
+    function signOut() {
+        console.log('Signing out...');
+        // Here you would implement the sign out logic
+        showToast('info', 'Sign Out', 'Signing out...', 3000);
+        closeUserDropdown();
+    }
 
         function showError(errorId, fieldId) {
             const errorElement = document.getElementById(errorId);
             if (errorElement) {
                 errorElement.style.display = 'block';
+            }
+        }
+
+        // Edit User Modal functionality
+        function openEditUserModal(userData) {
+            console.log('Opening edit modal for user:', userData);
+            
+            // Populate the form with user data
+            document.getElementById('editFirstName').value = userData.firstName || '';
+            document.getElementById('editLastName').value = userData.lastName || '';
+            document.getElementById('editUserEmail').value = userData.email || '';
+            document.getElementById('editUserAdmin').checked = userData.isAdmin || false;
+            
+            // Set partner display
+            const partnerDisplay = document.getElementById('editUserPartnerDisplay');
+            if (partnerDisplay) {
+                partnerDisplay.textContent = userData.partner || 'Select a partner...';
+            }
+            window.selectedEditUserPartnerValue = userData.partner || undefined;
+            
+            // Show the modal
+            const modal = document.getElementById('editUserModal');
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeEditUserModal() {
+            const modal = document.getElementById('editUserModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+            resetEditUserForm();
+        }
+
+        function resetEditUserForm() {
+            document.getElementById('editUserForm').reset();
+            clearEditUserErrors();
+            
+            // Reset partner selection
+            const partnerDisplay = document.getElementById('editUserPartnerDisplay');
+            if (partnerDisplay) {
+                partnerDisplay.textContent = 'Select a partner...';
+            }
+            window.selectedEditUserPartnerValue = undefined;
+        }
+
+        function clearEditUserErrors() {
+            const errorElements = document.querySelectorAll('#editUserForm .error-message');
+            errorElements.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
+        // Edit User Partner Dropdown functionality
+        function toggleEditUserPartnerDropdown() {
+            const dropdown = document.getElementById('editUserPartnerDropdown');
+            const display = document.querySelector('#editUserModal .searchable-dropdown-display');
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+                // Clear search when closing
+                document.getElementById('editUserPartnerSearch').value = '';
+                filterEditUserPartners();
+            } else {
+                dropdown.classList.add('show');
+                display.classList.add('open');
+                // Focus on search input when opening
+                setTimeout(() => {
+                    document.getElementById('editUserPartnerSearch').focus();
+                }, 100);
+            }
+        }
+
+        function selectEditUserPartner(value, displayText) {
+            const display = document.getElementById('editUserPartnerDisplay');
+            display.textContent = displayText;
+            
+            // Close dropdown
+            toggleEditUserPartnerDropdown();
+            
+            // Store the selected value for form submission
+            window.selectedEditUserPartnerValue = value;
+        }
+
+        function filterEditUserPartners() {
+            const searchTerm = document.getElementById('editUserPartnerSearch').value.toLowerCase();
+            const options = document.querySelectorAll('#editUserPartnerDropdown .searchable-dropdown-option');
+            
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+        }
+
+        function handleEditUserSubmission(e) {
+            console.log('Edit User form submission triggered');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Clear previous errors
+            clearEditUserErrors();
+            
+            const userData = {
+                firstName: document.getElementById('editFirstName').value.trim(),
+                lastName: document.getElementById('editLastName').value.trim(),
+                email: document.getElementById('editUserEmail').value.trim(),
+                partner: window.selectedEditUserPartnerValue,
+                isAdmin: document.getElementById('editUserAdmin').checked
+            };
+            
+            let hasErrors = false;
+            
+            // Validate form
+            if (!userData.firstName) {
+                showError('editFirstNameError', 'editFirstName');
+                hasErrors = true;
+            }
+            
+            if (!userData.lastName) {
+                showError('editLastNameError', 'editLastName');
+                hasErrors = true;
+            }
+            
+            if (!userData.email) {
+                showError('editUserEmailError', 'editUserEmail');
+                hasErrors = true;
+            }
+            
+            if (!userData.partner) {
+                showError('editUserVendorError', 'editUserVendor');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                // Handle successful submission
+                console.log('Updated user data:', userData);
+                // Here you would typically send the data to your backend
+                showToast('success', 'User Updated', 'User information has been updated successfully!', 4000);
+                closeEditUserModal();
             }
         }
 

@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Experience - API Keys</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Partner Experience specific styles */
+        .partner-badge {
+            background: #8b5cf6;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .exit-impersonation {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exit-impersonation:hover {
+            background: #b91c1c;
+        }
+
+        .permission-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .permission-tag {
+            background: #f8f9fa;
+            color: #495057;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            border: 1px solid #e9ecef;
+        }
+
+        .permission-tag:last-child {
+            background: #e9ecef;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        /* Permission tooltip styling */
+        .permission-tag[data-tooltip] {
+            cursor: help;
+        }
+
+        .permission-tag[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-top: -30px;
+            margin-left: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .btn-delete {
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .btn-delete:hover {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        .copy-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .pagination-info {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-pagination {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-pagination:hover:not(:disabled) {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .btn-pagination.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-pagination:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Table header sorting icons */
+        .sort-icon {
+            cursor: pointer;
+            color: #6b7280;
+            margin-left: 4px;
+            font-size: 12px;
+        }
+
+        .sort-icon:hover {
+            color: #374151;
+        }
+
+        /* API key display styling */
+        .api-key-display {
+            cursor: pointer;
+            padding: 8px 0;
+            transition: background-color 0.2s;
+            border-radius: 4px;
+            padding: 8px;
+        }
+
+        .api-key-display:hover {
+            background-color: #f8f9fa;
+        }
+
+        .api-key-display.copied {
+            background-color: #fff3cd;
+        }
+
+        .api-key-text {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            color: #212529;
+            margin-bottom: 4px;
+        }
+
+        .copy-instruction {
+            font-size: 11px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .copy-success {
+            font-size: 11px;
+            color: #28a745;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* User account styling */
+        .user-account {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: #212529;
+            font-size: 14px;
+        }
+
+        .account-id {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Expiration info styling */
+        .expiration-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .expiration-date {
+            font-weight: 500;
+            color: #212529;
+        }
+
+        .expiration-status {
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        .expiration-status.expired {
+            color: #dc2626;
+        }
+
+        /* Toaster styling */
+        .toaster {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid;
+            pointer-events: auto;
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.success .toast-icon {
+            color: #10b981;
+        }
+
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+
+        .toast.info .toast-icon {
+            color: #3b82f6;
+        }
+
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast.warning .toast-icon {
+            color: #f59e0b;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.error .toast-icon {
+            color: #ef4444;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .toast-close:hover {
+            color: #6b7280;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Multiselect styling */
+        .multiselect-container {
+            position: relative;
+        }
+
+        .multiselect-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .multiselect-display:hover {
+            border-color: #adb5bd;
+        }
+
+        .multiselect-display.open {
+            border-color: #007bff;
+        }
+
+        .multiselect-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .multiselect-dropdown.show {
+            display: block;
+        }
+
+        .multiselect-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .multiselect-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        /* Permissions styling */
+        .permissions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .permission-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+        }
+
+        .btn-link:hover {
+            color: #0056b3;
+        }
+
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 16px;
+            background: #f8f9fa;
+            min-height: 100px;
+        }
+
+        .permission-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            margin: 0;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            min-height: 40px;
+        }
+
+        .permission-option:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .permission-option.selected {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .permission-option.selected span {
+            color: white;
+        }
+
+        .permission-option span {
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .permissions-grid p {
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Users table styles */
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .users-table th {
+            background: #f8f9fa;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+
+        .users-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f1f3f4;
+            vertical-align: middle;
+        }
+
+        .users-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .user-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #212529;
+            font-size: 14px;
+        }
+
+        .user-email {
+            color: #6c757d;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .user-type-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .user-type-badge.vendor {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .user-type-badge.vendor-admin {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Button styles */
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6c757d;
+        }
+
+        .btn-icon:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-icon.btn-danger {
+            color: #dc3545;
+        }
+
+        .btn-icon.btn-danger:hover {
+            background-color: #f8d7da;
+        }
+
+        /* Sidebar navigation styles */
+        .sidebar-nav {
+            padding: 16px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section h3 {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 16px 8px;
+            margin-bottom: 8px;
+        }
+
+        .nav-section ul {
+            list-style: none;
+        }
+
+        .nav-section li {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .nav-section li:hover {
+            background: #e9ecef;
+        }
+
+        .nav-section li.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .nav-section li.active i {
+            color: white;
+        }
+
+        /* Modal actions */
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Error messages */
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>HOMER COACHING</span>
+            </div>
+            <div class="breadcrumb">
+                <span>Partner Dashboard</span>
+                <i class="fas fa-chevron-right"></i>
+                <span>API Keys</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="exit-impersonation" onclick="exitImpersonation()">
+                <i class="fas fa-sign-out-alt"></i>
+                Exit Impersonation
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span>HOMER COACHING</span>
+            <div class="partner-badge">PARTNER</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>MANAGEMENT</h3>
+                <ul>
+                    <li class="active" onclick="showApiKeys()"><i class="fas fa-key"></i> API Keys</li>
+                    <li onclick="showUsers()"><i class="fas fa-users"></i> Users</li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>API Keys</h1>
+            <p>API keys are owned by workspaces and remain active even after the creator is removed</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-number">2</div>
+                <div class="card-label">Total Keys</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">2</div>
+                <div class="card-label">Active Keys</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">0</div>
+                <div class="card-label">Total Usage</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">0</div>
+                <div class="card-label">Expiring Soon</div>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search by user/account...">
+            </div>
+            <button class="btn-primary" onclick="openCreateKeyModal()">
+                <i class="fas fa-plus"></i>
+                Create Key
+            </button>
+        </div>
+
+        <!-- API Keys Table -->
+        <div class="table-container">
+            <table class="api-keys-table">
+                <thead>
+                    <tr>
+                        <th>KEY</th>
+                        <th>KEY NAME</th>
+                        <th>USER/ACCOUNT</th>
+                        <th>PERMISSIONS</th>
+                        <th>EXPIRES <span class="sort-icon" onclick="sortTable('expires')">↑</span></th>
+                        <th>CREATED BY</th>
+                        <th>LAST USED</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="api-key-display" onclick="copyApiKey('pk_live_51JXabc123def456', this)">
+                                <div class="api-key-text">pk_live_••••••••••••••••</div>
+                                <div class="copy-instruction">(Click to copy - one time only)</div>
+                            </div>
+                        </td>
+                        <td>homer_coaching_prod_2024</td>
+                        <td>
+                            <div class="user-account">
+                                <div class="user-name">John Smith</div>
+                                <div class="account-id">Account: homer-coaching-123</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="permission-tags">
+                                <span class="permission-tag">contacts:read</span>
+                                <span class="permission-tag">contacts:edit</span>
+                                <span class="permission-tag" data-tooltip="leads:read, leads:edit, users:read">+3 more</span>
+                            </div>
+                        </td>
+                        <td>Never</td>
+                        <td>John Smith</td>
+                        <td>2 hours ago</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="refreshKey('key1')">Refresh</button>
+                                <button class="btn-action btn-delete" onclick="deleteKey('key1')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="api-key-display" onclick="copyApiKey('pk_live_51JXdef789ghi012', this)">
+                                <div class="api-key-text">pk_live_••••••••••••••••</div>
+                                <div class="copy-instruction">(Click to copy - one time only)</div>
+                            </div>
+                        </td>
+                        <td>homer_coaching_test_2024</td>
+                        <td>
+                            <div class="user-account">
+                                <div class="user-name">Sarah Johnson</div>
+                                <div class="account-id">Account: homer-coaching-456</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="permission-tags">
+                                <span class="permission-tag">properties:read</span>
+                                <span class="permission-tag">agents:read</span>
+                                <span class="permission-tag" data-tooltip="properties:edit, properties:delete">+2 more</span>
+                            </div>
+                        </td>
+                        <td>Jan 4, 2026</td>
+                        <td>Sarah Johnson</td>
+                        <td>Never</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="refreshKey('key2')">Refresh</button>
+                                <button class="btn-action btn-delete" onclick="deleteKey('key2')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing 1-2 of 2 keys
+            </div>
+            <div class="pagination-controls">
+                <button class="btn-pagination" disabled>Previous</button>
+                <button class="btn-pagination active">1</button>
+                <button class="btn-pagination" disabled>Next</button>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- Users Content -->
+    <main class="main-content" id="usersContent" style="display: none;">
+        <div class="page-header">
+            <h1>Users</h1>
+            <p>Manage users within your test account</p>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search by name or email...">
+            </div>
+            <button class="btn-primary" onclick="openAddUserModal()">
+                <i class="fas fa-plus"></i>
+                Add User
+            </button>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-container">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>USER</th>
+                        <th>TYPE</th>
+                        <th>LAST LOGIN</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-email="john@homercoaching.com">
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">John Smith</div>
+                                    <div class="user-email">john@homercoaching.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge vendor-admin">Vendor Admin</span>
+                        </td>
+                        <td>Jan 15, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-danger btn-sm" onclick="deleteUser('john@homercoaching.com')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-email="sarah@homercoaching.com">
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Sarah Johnson</div>
+                                    <div class="user-email">sarah@homercoaching.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge vendor">Vendor</span>
+                        </td>
+                        <td>Jan 14, 2024</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-danger btn-sm" onclick="deleteUser('sarah@homercoaching.com')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-email="mike@homercoaching.com">
+                        <td>
+                            <div class="user-info-cell">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">Mike Chen</div>
+                                    <div class="user-email">mike@homercoaching.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type-badge vendor">Vendor</span>
+                        </td>
+                        <td>Never</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-danger btn-sm" onclick="deleteUser('mike@homercoaching.com')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing 1-3 of 3 users
+            </div>
+            <div class="pagination-controls">
+                <button class="btn-pagination" disabled>Previous</button>
+                <button class="btn-pagination active">1</button>
+                <button class="btn-pagination" disabled>Next</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Key Modal -->
+    <div id="createKeyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New API Key</h2>
+                <button class="modal-close" onclick="closeCreateKeyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="createKeyForm">
+                <div class="form-group">
+                    <label for="keyName">Key Name*</label>
+                    <input type="text" id="keyName" name="keyName" placeholder="e.g., production-api-key">
+                    <div class="error-message" id="keyNameError">Key name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userSelect">User*</label>
+                    <select id="userSelect" name="userSelect" required>
+                        <option value="">Select a user...</option>
+                        <option value="john-smith">John Smith</option>
+                        <option value="sarah-johnson">Sarah Johnson</option>
+                        <option value="mike-brown">Mike Brown</option>
+                        <option value="alex-rodriguez">Alex Rodriguez</option>
+                    </select>
+                    <div class="error-message" id="userSelectError">User selection is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="scopeSelect">Top Level Scope*</label>
+                    <div class="multiselect-container">
+                        <div class="multiselect-display" onclick="toggleMultiselect()">
+                            <span id="scopeDisplay">Select scopes...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multiselect-dropdown" id="scopeDropdown">
+                            <label class="multiselect-option">
+                                <input type="checkbox" value="platform" onchange="updateScopeSelection()">
+                                <span>Platform</span>
+                            </label>
+                            <label class="multiselect-option">
+                                <input type="checkbox" value="crm" onchange="updateScopeSelection()">
+                                <span>CRM</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="scopeError">At least one scope is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Permissions*</label>
+                    <div class="permissions-header">
+                        <div class="permission-actions">
+                            <button type="button" class="btn-link" onclick="selectAllPermissions()">Select: All</button>
+                            <button type="button" class="btn-link" onclick="selectNoPermissions()">None</button>
+                        </div>
+                    </div>
+                    <div class="permissions-grid" id="permissionsGrid">
+                        <p style="color: #6c757d; font-style: italic; margin: 0;">Please select at least one scope</p>
+                    </div>
+                    <div class="error-message" id="permissionsError">At least one permission is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expires">Expires</label>
+                    <select id="expires">
+                        <option value="30d">1 month</option>
+                        <option value="never">Never</option>
+                        <option value="90d">90 days</option>
+                        <option value="1y">1 year</option>
+                        <option value="custom">Custom date</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateKeyModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Key</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <button class="modal-close" onclick="closeAddUserModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="userName">Full Name</label>
+                        <input type="text" id="userName" name="userName" placeholder="Enter full name" required>
+                        <div class="error-message" id="userNameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email Address</label>
+                        <input type="email" id="userEmail" name="userEmail" placeholder="Enter email address" required>
+                        <div class="error-message" id="userEmailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="userAdmin" name="userAdmin">
+                            <span class="checkmark"></span>
+                            Grant admin privileges
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+                <button class="btn-primary" onclick="handleAddUserSubmission()">Send Invitation</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Delete API Key Modal -->
+    <div id="deleteKeyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete API Key</h2>
+                <button class="modal-close" onclick="closeDeleteKeyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Are you sure you want to delete this API key? This will remove the integration for your client and cannot be undone.</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeDeleteKeyModal()">Cancel</button>
+                <button class="btn-danger" onclick="confirmDeleteApiKey()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refresh API Key Modal -->
+    <div id="refreshKeyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Refresh API Key</h2>
+                <button class="modal-close" onclick="closeRefreshKeyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Are you sure you want to refresh this API key? The old key will be invalidated and you will need to update the integration with the new key.</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeRefreshKeyModal()">Cancel</button>
+                <button class="btn-danger" onclick="confirmRefreshApiKey()">Refresh Key</button>
+                </div>
+        </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete User</h2>
+                <button class="modal-close" onclick="closeDeleteUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeDeleteUserModal()">Cancel</button>
+                <button class="btn-danger" onclick="confirmDeleteUser()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toaster Container -->
+    <div id="toaster" class="toaster"></div>
+
+
+
+    <script>
+        // Table sorting functionality
+        function sortTable(column) {
+            showToast('info', 'Sorting', `Sorting by ${column} column`, 2000);
+            // Implementation would go here for actual sorting
+        }
+
+        // Exit impersonation
+        function exitImpersonation() {
+            if (confirm('Are you sure you want to exit impersonation?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Copy API key functionality
+        function copyApiKey(key, element) {
+            navigator.clipboard.writeText(key).then(() => {
+                // Show success state
+                element.classList.add('copied');
+                
+                // Change the copy instruction to success message
+                const copyInstruction = element.querySelector('.copy-instruction');
+                if (copyInstruction) {
+                    copyInstruction.textContent = 'Copied!';
+                    copyInstruction.className = 'copy-success';
+                }
+                
+                // Show toast notification
+                showToast('success', 'Copied!', 'API key copied to clipboard', 2000);
+                
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    element.classList.remove('copied');
+                    if (copyInstruction) {
+                        copyInstruction.textContent = '(Click to copy - one time only)';
+                        copyInstruction.className = 'copy-instruction';
+                    }
+                }, 3000);
+            }).catch(() => {
+                showToast('error', 'Error', 'Failed to copy API key', 3000);
+            });
+        }
+
+        // Refresh key functionality
+        function refreshKey(keyId) {
+            window.keyToRefresh = keyId;
+            document.getElementById('refreshKeyModal').style.display = 'flex';
+        }
+
+        // Delete key functionality
+        function deleteKey(keyId) {
+            window.keyToDelete = keyId;
+            document.getElementById('deleteKeyModal').style.display = 'flex';
+        }
+
+        // Confirm delete key
+        function confirmDeleteApiKey() {
+            if (window.keyToDelete) {
+                // Remove the row from the table
+                const rows = document.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const keyCell = row.querySelector('.api-key-display .key-prefix');
+                    if (keyCell && keyCell.textContent.includes(window.keyToDelete)) {
+                        row.remove();
+                        showToast('success', 'Deleted', 'API key deleted successfully', 3000);
+                    }
+                });
+                
+                closeDeleteKeyModal();
+            }
+        }
+
+        // Confirm refresh key
+        function confirmRefreshApiKey() {
+            if (window.keyToRefresh) {
+                // Close modal and show success message like superadmin
+                closeRefreshKeyModal();
+                showToast('success', 'Refreshed', 'API key refreshed successfully', 3000);
+            }
+        }
+
+        // Modal functions
+        function openCreateKeyModal() {
+            document.getElementById('createKeyModal').style.display = 'flex';
+        }
+
+        function closeCreateKeyModal() {
+            document.getElementById('createKeyModal').style.display = 'none';
+        }
+
+        function openAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+
+        function closeDeleteKeyModal() {
+            document.getElementById('deleteKeyModal').style.display = 'none';
+        }
+
+        function closeRefreshKeyModal() {
+            document.getElementById('refreshKeyModal').style.display = 'none';
+        }
+
+        // Multiselect functionality
+        function toggleMultiselect() {
+            const dropdown = document.getElementById('scopeDropdown');
+            const display = document.getElementById('scopeDisplay');
+            
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+            } else {
+                dropdown.classList.add('show');
+                display.classList.add('open');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const multiselectContainer = document.querySelector('.multiselect-container');
+            const dropdown = document.getElementById('scopeDropdown');
+            const display = document.getElementById('scopeDisplay');
+            
+            if (!multiselectContainer.contains(event.target)) {
+                dropdown.classList.remove('show');
+                display.classList.remove('open');
+            }
+        });
+
+        function updateScopeSelection() {
+            const checkboxes = document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked');
+            const display = document.getElementById('scopeDisplay');
+            
+            if (checkboxes.length === 0) {
+                display.textContent = 'Select scopes...';
+            } else if (checkboxes.length === 1) {
+                display.textContent = checkboxes[0].nextElementSibling.textContent;
+            } else {
+                display.textContent = `${checkboxes.length} scopes selected`;
+            }
+            
+            // Update permissions grid based on selected scopes
+            updatePermissionsByScope();
+        }
+
+        function updatePermissionsByScope() {
+            const permissionsGrid = document.getElementById('permissionsGrid');
+            const selectedScopes = Array.from(document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            if (selectedScopes.length === 0) {
+                permissionsGrid.innerHTML = '<p style="color: #6c757d; font-style: italic; margin: 0;">Please select at least one scope</p>';
+                return;
+            }
+            
+            let permissionsHTML = '';
+            
+            if (selectedScopes.includes('platform')) {
+                permissionsHTML += `
+                    <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
+                        <span>users:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="users:write" onclick="togglePermission(this)">
+                        <span>users:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="users:delete" onclick="togglePermission(this)">
+                        <span>users:delete</span>
+                    </div>
+                    <div class="permission-option" data-permission="organizations:read" onclick="togglePermission(this)">
+                        <span>organizations:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="organizations:write" onclick="togglePermission(this)">
+                        <span>organizations:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="workspaces:read" onclick="togglePermission(this)">
+                        <span>workspaces:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="workspaces:write" onclick="togglePermission(this)">
+                        <span>workspaces:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="settings:read" onclick="togglePermission(this)">
+                        <span>settings:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="settings:write" onclick="togglePermission(this)">
+                        <span>settings:write</span>
+                    </div>
+                `;
+            }
+            
+            if (selectedScopes.includes('crm')) {
+                permissionsHTML += `
+                    <div class="permission-option" data-permission="contacts:read" onclick="togglePermission(this)">
+                        <span>contacts:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="contacts:write" onclick="togglePermission(this)">
+                        <span>contacts:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="contacts:delete" onclick="togglePermission(this)">
+                        <span>contacts:delete</span>
+                    </div>
+                    <div class="permission-option" data-permission="leads:read" onclick="togglePermission(this)">
+                        <span>leads:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="leads:write" onclick="togglePermission(this)">
+                        <span>leads:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="deals:read" onclick="togglePermission(this)">
+                        <span>deals:read</span>
+                    </div>
+                `;
+            }
+            
+            permissionsGrid.innerHTML = permissionsHTML;
+        }
+
+        function selectAllPermissions() {
+            const checkboxes = document.querySelectorAll('#permissionsGrid input[type="checkbox"]');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        }
+
+        function selectNoPermissions() {
+            const permissionOptions = document.querySelectorAll('#permissionsGrid .permission-option');
+            permissionOptions.forEach(option => option.classList.remove('selected'));
+        }
+
+        function togglePermission(element) {
+            element.classList.toggle('selected');
+        }
+
+        // Tab switching functions
+        function showApiKeys() {
+            document.querySelector('.main-content').style.display = 'block';
+            document.getElementById('usersContent').style.display = 'none';
+            
+            // Update navigation active state
+            document.querySelector('li[onclick="showApiKeys()"]').classList.add('active');
+            document.querySelector('li[onclick="showUsers()"]').classList.remove('active');
+        }
+
+        function showUsers() {
+            document.querySelector('.main-content').style.display = 'none';
+            document.getElementById('usersContent').style.display = 'block';
+            
+            // Update navigation active state
+            document.querySelector('li[onclick="showUsers()"]').classList.add('active');
+            document.querySelector('li[onclick="showApiKeys()"]').classList.remove('active');
+        }
+
+        // User management functions
+        function deleteUser(email) {
+            // Store the email for the confirmation modal
+            window.userToDelete = email;
+            openDeleteUserModal();
+        }
+
+        function confirmDeleteUser() {
+            const email = window.userToDelete;
+            if (email) {
+                // Here you would typically call your backend API to delete the user
+                showToast('success', 'User Deleted', `User ${email} has been deleted successfully`, 3000);
+                
+                // Remove the user row from the table
+                const userRow = document.querySelector(`tr[data-email="${email}"]`);
+                if (userRow) {
+                    userRow.remove();
+                }
+                
+                closeDeleteUserModal();
+            }
+        }
+
+        function openDeleteUserModal() {
+            document.getElementById('deleteUserModal').style.display = 'flex';
+        }
+
+        function closeDeleteUserModal() {
+            document.getElementById('deleteUserModal').style.display = 'none';
+        }
+
+        // Create key functionality
+        function createKey() {
+            const keyName = document.getElementById('keyName').value;
+            const userSelect = document.getElementById('userSelect').value;
+            const selectedScopes = Array.from(document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked')).map(cb => cb.value);
+            const selectedPermissions = Array.from(document.querySelectorAll('#permissionsGrid input[type="checkbox"]:checked')).map(cb => cb.value);
+            const expires = document.getElementById('expires').value;
+
+            // Validate required fields
+            let hasErrors = false;
+            
+            if (!keyName) {
+                document.getElementById('keyNameError').style.display = 'block';
+                hasErrors = true;
+            } else {
+                document.getElementById('keyNameError').style.display = 'none';
+            }
+            
+            if (!userSelect) {
+                document.getElementById('userSelectError').style.display = 'block';
+                hasErrors = true;
+            } else {
+                document.getElementById('userSelectError').style.display = 'none';
+            }
+            
+            if (selectedScopes.length === 0) {
+                document.getElementById('scopeError').style.display = 'block';
+                hasErrors = true;
+            } else {
+                document.getElementById('scopeError').style.display = 'none';
+            }
+            
+            if (selectedPermissions.length === 0) {
+                document.getElementById('permissionsError').style.display = 'block';
+                hasErrors = true;
+            } else {
+                document.getElementById('permissionsError').style.display = 'none';
+            }
+
+            if (!hasErrors) {
+                showToast('success', 'Created', 'New API key created successfully', 3000);
+                closeCreateKeyModal();
+                // Reset form
+                document.getElementById('createKeyForm').reset();
+                document.getElementById('scopeDisplay').textContent = 'Select scopes...';
+                document.getElementById('permissionsGrid').innerHTML = '<p style="color: #6c757d; font-style: italic; margin: 0;">Please select at least one scope</p>';
+            }
+        }
+
+        // Add user functionality
+        function handleAddUserSubmission() {
+            const userName = document.getElementById('userName').value.trim();
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const isAdmin = document.getElementById('userAdmin').checked;
+            
+            let hasErrors = false;
+            
+            // Clear previous errors
+            clearAddUserErrors();
+            
+            // Validate form
+            if (!userName) {
+                showError('userNameError', 'Name is required');
+                hasErrors = true;
+            }
+            
+            if (!userEmail) {
+                showError('userEmailError', 'Email is required');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                // Show success message
+                showToast('success', 'User Invited', `Invitation has been sent to ${userEmail}`, 4000);
+                closeAddUserModal();
+                // Reset form
+                document.getElementById('addUserForm').reset();
+            }
+        }
+
+        // Helper functions
+        function clearAddUserErrors() {
+            document.getElementById('userNameError').textContent = '';
+            document.getElementById('userEmailError').textContent = '';
+        }
+
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function showToast(type, title, message, duration = 3000) {
+            const toaster = document.getElementById('toaster');
+            if (!toaster) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toaster.appendChild(toast);
+            
+            // Auto-remove after duration
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, duration);
+        }
+
+        // Close modals on outside click
+        document.addEventListener('DOMContentLoaded', function() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        if (modal.id === 'addUserModal') {
+                            closeAddUserModal();
+                        } else if (modal.id === 'deleteKeyModal') {
+                            closeDeleteKeyModal();
+                        } else if (modal.id === 'refreshKeyModal') {
+                            closeRefreshKeyModal();
+                        } else if (modal.id === 'createKeyModal') {
+                            closeCreateKeyModal();
+                        }
+                    }
+                });
+            });
+
+            // Close modals on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeAddUserModal();
+                    closeDeleteKeyModal();
+                    closeRefreshKeyModal();
+                    closeCreateKeyModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
