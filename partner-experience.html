@@ -1339,27 +1339,37 @@
                 return;
             }
             
-            // Show the simplified permissions regardless of scope selection
-            let permissionsHTML = `
-                <div class="permission-option" data-permission="contacts:read" onclick="togglePermission(this)">
-                    <span>contacts:read</span>
-                </div>
-                <div class="permission-option" data-permission="contacts:write" onclick="togglePermission(this)">
-                    <span>contacts:write</span>
-                </div>
-                <div class="permission-option" data-permission="contacts:delete" onclick="togglePermission(this)">
-                    <span>contacts:delete</span>
-                </div>
-                <div class="permission-option" data-permission="contacts:create" onclick="togglePermission(this)">
-                    <span>contacts:create</span>
-                </div>
-                <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
-                    <span>users:read</span>
-                </div>
-                <div class="permission-option" data-permission="private_leads:access" onclick="togglePermission(this)">
-                    <span>private_leads:access</span>
-                </div>
-            `;
+            let permissionsHTML = '';
+            
+            // Platform scope permissions (Users)
+            if (selectedScopes.includes('platform')) {
+                permissionsHTML += `
+                    <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
+                        <span>users:read</span>
+                    </div>
+                `;
+            }
+            
+            // CRM scope permissions (Contacts and Private Leads)
+            if (selectedScopes.includes('crm')) {
+                permissionsHTML += `
+                    <div class="permission-option" data-permission="contacts:read" onclick="togglePermission(this)">
+                        <span>contacts:read</span>
+                    </div>
+                    <div class="permission-option" data-permission="contacts:write" onclick="togglePermission(this)">
+                        <span>contacts:write</span>
+                    </div>
+                    <div class="permission-option" data-permission="contacts:delete" onclick="togglePermission(this)">
+                        <span>contacts:delete</span>
+                    </div>
+                    <div class="permission-option" data-permission="contacts:create" onclick="togglePermission(this)">
+                        <span>contacts:create</span>
+                    </div>
+                    <div class="permission-option" data-permission="private_leads:access" onclick="togglePermission(this)">
+                        <span>private_leads:access</span>
+                    </div>
+                `;
+            }
             
             permissionsGrid.innerHTML = permissionsHTML;
         }
