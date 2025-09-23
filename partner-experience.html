@@ -59,6 +59,22 @@
             font-weight: 600;
         }
 
+        /* Remove hover effects from permission tags in table */
+        .api-keys-table .permission-tag:hover,
+        .api-keys-table .permission-tags .permission-tag:hover {
+            border-color: #e9ecef !important;
+            background: #f8f9fa !important;
+            color: #495057 !important;
+            transition: none !important;
+        }
+        
+        /* Also override for the last-child (the +X more tags) */
+        .api-keys-table .permission-tag:last-child:hover {
+            border-color: #e9ecef !important;
+            background: #e9ecef !important;
+            color: #6c757d !important;
+        }
+
         /* Permission tooltip styling */
         .permission-tag[data-tooltip] {
             cursor: help;
@@ -700,14 +716,14 @@
                 <span>Partner Dashboard</span>
                 <i class="fas fa-chevron-right"></i>
                 <span>API Keys</span>
-            </div>
+        </div>
         </div>
         <div class="header-right">
-            <button class="exit-impersonation" onclick="exitImpersonation()">
-                <i class="fas fa-sign-out-alt"></i>
-                Exit Impersonation
-            </button>
-        </div>
+        <button class="exit-impersonation" onclick="exitImpersonation()">
+            <i class="fas fa-sign-out-alt"></i>
+            Exit Impersonation
+        </button>
+    </div>
     </header>
 
     <!-- Sidebar -->
@@ -716,7 +732,7 @@
             <span>HOMER COACHING</span>
             <div class="partner-badge">PARTNER</div>
         </div>
-        
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <h3>MANAGEMENT</h3>
@@ -730,17 +746,17 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="page-header">
-            <h1>API Keys</h1>
-            <p>API keys are owned by workspaces and remain active even after the creator is removed</p>
-        </div>
+            <div class="page-header">
+                <h1>API Keys</h1>
+                <p>API keys are owned by workspaces and remain active even after the creator is removed</p>
+            </div>
 
         <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
                 <div class="card-number">2</div>
                 <div class="card-label">Total Keys</div>
-            </div>
+                </div>
             <div class="summary-card">
                 <div class="card-number">2</div>
                 <div class="card-label">Active Keys</div>
@@ -748,7 +764,7 @@
             <div class="summary-card">
                 <div class="card-number">0</div>
                 <div class="card-label">Total Usage</div>
-            </div>
+                </div>
             <div class="summary-card">
                 <div class="card-number">0</div>
                 <div class="card-label">Expiring Soon</div>
@@ -850,23 +866,23 @@
         </div>
 
         <!-- Pagination -->
-        <div class="pagination">
-            <div class="pagination-info">
-                Showing 1-2 of 2 keys
-            </div>
-            <div class="pagination-controls">
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing 1-2 of 2 keys
+                </div>
+                <div class="pagination-controls">
                 <button class="btn-pagination" disabled>Previous</button>
                 <button class="btn-pagination active">1</button>
                 <button class="btn-pagination" disabled>Next</button>
+                </div>
             </div>
-        </div>
     </main>
 
 
 
     <!-- Users Content -->
     <main class="main-content" id="usersContent" style="display: none;">
-        <div class="page-header">
+            <div class="page-header">
             <h1>Users</h1>
             <p>Manage users within your test account</p>
         </div>
@@ -878,23 +894,23 @@
                 <input type="text" placeholder="Search by name or email...">
             </div>
             <button class="btn-primary" onclick="openAddUserModal()">
-                <i class="fas fa-plus"></i>
-                Add User
-            </button>
-        </div>
+                        <i class="fas fa-plus"></i>
+                        Add User
+                    </button>
+            </div>
 
-        <!-- Users Table -->
+            <!-- Users Table -->
         <div class="table-container">
             <table class="users-table">
-                <thead>
-                    <tr>
-                        <th>USER</th>
-                        <th>TYPE</th>
-                        <th>LAST LOGIN</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    <thead>
+                        <tr>
+                            <th>USER</th>
+                            <th>TYPE</th>
+                            <th>LAST LOGIN</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     <tr data-email="john@homercoaching.com">
                         <td>
                             <div class="user-info-cell">
@@ -905,18 +921,18 @@
                                     <div class="user-name">John Smith</div>
                                     <div class="user-email">john@homercoaching.com</div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
+                                </div>
+                            </td>
+                            <td>
                             <span class="user-type-badge vendor-admin">Vendor Admin</span>
-                        </td>
-                        <td>Jan 15, 2024</td>
-                        <td>
+                            </td>
+                            <td>Jan 15, 2024</td>
+                            <td>
                             <div class="actions">
                                 <button class="btn-danger btn-sm" onclick="deleteUser('john@homercoaching.com')">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
                     <tr data-email="sarah@homercoaching.com">
                         <td>
                             <div class="user-info-cell">
@@ -927,18 +943,18 @@
                                     <div class="user-name">Sarah Johnson</div>
                                     <div class="user-email">sarah@homercoaching.com</div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
+                                </div>
+                            </td>
+                            <td>
                             <span class="user-type-badge vendor">Vendor</span>
-                        </td>
+                            </td>
                         <td>Jan 14, 2024</td>
                         <td>
                             <div class="actions">
                                 <button class="btn-danger btn-sm" onclick="deleteUser('sarah@homercoaching.com')">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
                     <tr data-email="mike@homercoaching.com">
                         <td>
                             <div class="user-info-cell">
@@ -949,28 +965,28 @@
                                     <div class="user-name">Mike Chen</div>
                                     <div class="user-email">mike@homercoaching.com</div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
+                                </div>
+                            </td>
+                            <td>
                             <span class="user-type-badge vendor">Vendor</span>
-                        </td>
-                        <td>Never</td>
-                        <td>
+                            </td>
+                            <td>Never</td>
+                            <td>
                             <div class="actions">
                                 <button class="btn-danger btn-sm" onclick="deleteUser('mike@homercoaching.com')">Delete</button>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
 
         <!-- Pagination -->
-        <div class="pagination">
-            <div class="pagination-info">
+                <div class="pagination">
+                    <div class="pagination-info">
                 Showing 1-3 of 3 users
-            </div>
-            <div class="pagination-controls">
+                    </div>
+                    <div class="pagination-controls">
                 <button class="btn-pagination" disabled>Previous</button>
                 <button class="btn-pagination active">1</button>
                 <button class="btn-pagination" disabled>Next</button>
@@ -1022,8 +1038,8 @@
                             <label class="multiselect-option">
                                 <input type="checkbox" value="crm" onchange="updateScopeSelection()">
                                 <span>CRM</span>
-                            </label>
-                        </div>
+                        </label>
+                    </div>
                     </div>
                     <div class="error-message" id="scopeError">At least one scope is required</div>
                 </div>
@@ -1111,7 +1127,7 @@
             <div class="modal-body">
                 <p>Are you sure you want to delete this API key? This will remove the integration for your client and cannot be undone.</p>
             </div>
-            
+
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeDeleteKeyModal()">Cancel</button>
                 <button class="btn-danger" onclick="confirmDeleteApiKey()">Delete</button>
@@ -1323,69 +1339,34 @@
                 return;
             }
             
-            let permissionsHTML = '';
-            
-            if (selectedScopes.includes('platform')) {
-                permissionsHTML += `
-                    <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
-                        <span>users:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="users:write" onclick="togglePermission(this)">
-                        <span>users:write</span>
-                    </div>
-                    <div class="permission-option" data-permission="users:delete" onclick="togglePermission(this)">
-                        <span>users:delete</span>
-                    </div>
-                    <div class="permission-option" data-permission="organizations:read" onclick="togglePermission(this)">
-                        <span>organizations:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="organizations:write" onclick="togglePermission(this)">
-                        <span>organizations:write</span>
-                    </div>
-                    <div class="permission-option" data-permission="workspaces:read" onclick="togglePermission(this)">
-                        <span>workspaces:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="workspaces:write" onclick="togglePermission(this)">
-                        <span>workspaces:write</span>
-                    </div>
-                    <div class="permission-option" data-permission="settings:read" onclick="togglePermission(this)">
-                        <span>settings:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="settings:write" onclick="togglePermission(this)">
-                        <span>settings:write</span>
-                    </div>
-                `;
-            }
-            
-            if (selectedScopes.includes('crm')) {
-                permissionsHTML += `
-                    <div class="permission-option" data-permission="contacts:read" onclick="togglePermission(this)">
-                        <span>contacts:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="contacts:write" onclick="togglePermission(this)">
-                        <span>contacts:write</span>
-                    </div>
-                    <div class="permission-option" data-permission="contacts:delete" onclick="togglePermission(this)">
-                        <span>contacts:delete</span>
-                    </div>
-                    <div class="permission-option" data-permission="leads:read" onclick="togglePermission(this)">
-                        <span>leads:read</span>
-                    </div>
-                    <div class="permission-option" data-permission="leads:write" onclick="togglePermission(this)">
-                        <span>leads:write</span>
-                    </div>
-                    <div class="permission-option" data-permission="deals:read" onclick="togglePermission(this)">
-                        <span>deals:read</span>
-                    </div>
-                `;
-            }
+            // Show the simplified permissions regardless of scope selection
+            let permissionsHTML = `
+                <div class="permission-option" data-permission="contacts:read" onclick="togglePermission(this)">
+                    <span>contacts:read</span>
+                </div>
+                <div class="permission-option" data-permission="contacts:write" onclick="togglePermission(this)">
+                    <span>contacts:write</span>
+                </div>
+                <div class="permission-option" data-permission="contacts:delete" onclick="togglePermission(this)">
+                    <span>contacts:delete</span>
+                </div>
+                <div class="permission-option" data-permission="contacts:create" onclick="togglePermission(this)">
+                    <span>contacts:create</span>
+                </div>
+                <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
+                    <span>users:read</span>
+                </div>
+                <div class="permission-option" data-permission="private_leads:access" onclick="togglePermission(this)">
+                    <span>private_leads:access</span>
+                </div>
+            `;
             
             permissionsGrid.innerHTML = permissionsHTML;
         }
 
         function selectAllPermissions() {
-            const checkboxes = document.querySelectorAll('#permissionsGrid input[type="checkbox"]');
-            checkboxes.forEach(checkbox => checkbox.checked = true);
+            const permissionOptions = document.querySelectorAll('#permissionsGrid .permission-option');
+            permissionOptions.forEach(option => option.classList.add('selected'));
         }
 
         function selectNoPermissions() {
@@ -1452,7 +1433,7 @@
             const keyName = document.getElementById('keyName').value;
             const userSelect = document.getElementById('userSelect').value;
             const selectedScopes = Array.from(document.querySelectorAll('#scopeDropdown input[type="checkbox"]:checked')).map(cb => cb.value);
-            const selectedPermissions = Array.from(document.querySelectorAll('#permissionsGrid input[type="checkbox"]:checked')).map(cb => cb.value);
+            const selectedPermissions = Array.from(document.querySelectorAll('#permissionsGrid .permission-option.selected')).map(el => el.getAttribute('data-permission'));
             const expires = document.getElementById('expires').value;
 
             // Validate required fields
