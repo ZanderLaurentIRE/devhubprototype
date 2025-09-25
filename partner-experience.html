@@ -452,11 +452,11 @@
 
         .permissions-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 6px;
             border: 1px solid #ced4da;
             border-radius: 6px;
-            padding: 16px;
+            padding: 12px;
             background: #f8f9fa;
             min-height: 100px;
         }
@@ -465,14 +465,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 12px;
+            padding: 4px 6px;
             margin: 0;
             cursor: pointer;
             background: #f8f9fa;
             border: 1px solid #dee2e6;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s ease;
-            min-height: 40px;
+            min-height: 32px;
         }
 
         .permission-option:hover {
@@ -491,7 +491,7 @@
         }
 
         .permission-option span {
-            font-size: 14px;
+            font-size: 11px;
             color: #495057;
             font-weight: 500;
         }
@@ -1352,8 +1352,17 @@
                 <div class="permission-option" data-permission="users:read" onclick="togglePermission(this)">
                     <span>users:read</span>
                 </div>
-                <div class="permission-option" data-permission="private_leads:access" onclick="togglePermission(this)">
-                    <span>private_leads:access</span>
+                <div class="permission-option" data-permission="private_contacts:create" onclick="togglePermission(this)">
+                    <span>private_contacts:create</span>
+                </div>
+                <div class="permission-option" data-permission="private_contacts:read" onclick="togglePermission(this)">
+                    <span>private_contacts:read</span>
+                </div>
+                <div class="permission-option" data-permission="private_contacts:update" onclick="togglePermission(this)">
+                    <span>private_contacts:update</span>
+                </div>
+                <div class="permission-option" data-permission="private_contacts:delete" onclick="togglePermission(this)">
+                    <span>private_contacts:delete</span>
                 </div>
             `;
             
