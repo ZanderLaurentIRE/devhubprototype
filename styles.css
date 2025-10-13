@@ -2152,6 +2152,109 @@ select:invalid:focus {
     }
 }
 
+/* Webhook form styles */
+.webhook-section {
+    margin: 24px 0;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.webhook-section h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #212529;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.radio-option:hover {
+    border-color: #007bff;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ced4da;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.radio-option input[type="radio"]:checked + .radio-custom {
+    border-color: #007bff;
+}
+
+.radio-option input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: #007bff;
+    border-radius: 50%;
+}
+
+.radio-content strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #212529;
+}
+
+.radio-content small {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.form-group small {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 .toast.removing {
     animation: slideOut 0.3s ease-in;
 }

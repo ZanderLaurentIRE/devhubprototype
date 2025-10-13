@@ -56,7 +56,7 @@
             <div class="nav-section">
                 <h3>API MANAGEMENT</h3>
                 <ul>
-                    <li class="active"><i class="fas fa-key"></i> API Keys</li>
+                    <li class="active"><i class="fas fa-key"></i> <a href="index.html">API Keys</a></li>
                 </ul>
             </div>
         </nav>
@@ -260,6 +260,154 @@
             </table>
         </div>
     </main>
+
+    <!-- Create Webhook Modal -->
+    <div id="createWebhookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Webhook</h2>
+                <button class="modal-close" onclick="closeCreateWebhookModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="createWebhookForm">
+                <!-- API Key Input -->
+                <div class="form-group">
+                    <label for="apiKey">API Key*</label>
+                    <input type="text" id="apiKey" name="apiKey" placeholder="Enter your API key" required>
+                    <div class="error-message" id="apiKeyError">API key is required</div>
+                    <small>Use your existing API key to authenticate this webhook creation</small>
+                </div>
+
+                <!-- Entity Type Selection -->
+                <div class="form-group">
+                    <label>Entity Type*</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="account" checked>
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Account</strong>
+                                <small>Webhook for entire account</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="entity">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Entity</strong>
+                                <small>Webhook for specific entity</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="user">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>User</strong>
+                                <small>Webhook for specific user</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Scope ID (conditional) -->
+                <div class="form-group" id="scopeIdGroup" style="display: none;">
+                    <label for="scopeId">Scope ID*</label>
+                    <input type="text" id="scopeId" name="scopeId" placeholder="Enter scope ID">
+                    <div class="error-message" id="scopeIdError">Scope ID is required</div>
+                </div>
+
+                <!-- Vendor -->
+                <div class="form-group">
+                    <label for="webhookVendor">Vendor*</label>
+                    <select id="webhookVendor" name="webhookVendor" required>
+                        <option value="">Select vendor...</option>
+                        <option value="homer-coaching">Homer Coaching</option>
+                        <option value="boldtrail">BoldTrail</option>
+                    </select>
+                    <div class="error-message" id="webhookVendorError">Vendor is required</div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="webhookStatus">Status</label>
+                    <select id="webhookStatus" name="webhookStatus">
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Contact Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="contactDestination">Contact Destination URL*</label>
+                        <input type="url" id="contactDestination" name="contactDestination" placeholder="https://your-api.com/webhooks/contacts">
+                        <div class="error-message" id="contactDestinationError">Contact destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMethod">Contact Method</label>
+                        <select id="contactMethod" name="contactMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactHeaders">Contact Headers (JSON)</label>
+                        <textarea id="contactHeaders" name="contactHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Contact Action Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Action Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="actionDestination">Action Destination URL*</label>
+                        <input type="url" id="actionDestination" name="actionDestination" placeholder="https://your-api.com/webhooks/actions">
+                        <div class="error-message" id="actionDestinationError">Action destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="actionMethod">Action Method</label>
+                        <select id="actionMethod" name="actionMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="actionHeaders">Action Headers (JSON)</label>
+                        <textarea id="actionHeaders" name="actionHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Batch Limit -->
+                <div class="form-group">
+                    <label for="batchLimit">Batch Limit</label>
+                    <input type="number" id="batchLimit" name="batchLimit" value="100" min="1" max="1000">
+                    <small>Maximum number of events to batch together</small>
+                </div>
+
+                <!-- Inclusions -->
+                <div class="form-group">
+                    <label for="inclusions">Inclusions (Optional)</label>
+                    <textarea id="inclusions" name="inclusions" placeholder="Filter criteria for webhook events" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateWebhookModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Webhook</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Create Key Modal -->
     <div id="createKeyModal" class="modal">

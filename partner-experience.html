@@ -702,6 +702,219 @@
         .error-message.show {
             display: block;
         }
+
+        /* Webhook specific styles */
+        .webhook-url {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .url-text {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            color: #212529;
+            word-break: break-all;
+        }
+
+        .url-status {
+            font-size: 11px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .success-rate {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 80px;
+        }
+
+        .rate-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .rate-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .rate-fill {
+            height: 100%;
+            background-color: #28a745;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-badge i {
+            font-size: 8px;
+        }
+
+        /* Webhook table specific styles */
+        .entity-type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .endpoint-url {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            width: fit-content;
+        }
+
+        .batch-limit {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        /* Webhook form styles */
+        .webhook-section {
+            margin: 24px 0;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .webhook-section h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 8px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: #007bff;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-custom {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ced4da;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom {
+            border-color: #007bff;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #007bff;
+            border-radius: 50%;
+        }
+
+        .radio-content strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #212529;
+        }
+
+        .radio-content small {
+            color: #6c757d;
+            font-size: 13px;
+        }
+
+        .form-group small {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -739,6 +952,7 @@
                 <ul>
                     <li class="active" onclick="showApiKeys()"><i class="fas fa-key"></i> API Keys</li>
                     <li onclick="showUsers()"><i class="fas fa-users"></i> Users</li>
+                    <li onclick="showWebhooks()"><i class="fas fa-plug"></i> Webhooks</li>
                 </ul>
             </div>
         </nav>
@@ -826,6 +1040,7 @@
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-action" onclick="refreshKey('key1')">Refresh</button>
+                                <button class="btn-action" onclick="openCreateWebhookModal('pk_live_51JXabc123def456')">Add Webhook</button>
                                 <button class="btn-action btn-delete" onclick="deleteKey('key1')">Delete</button>
                             </div>
                         </td>
@@ -857,6 +1072,7 @@
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-action" onclick="refreshKey('key2')">Refresh</button>
+                                <button class="btn-action" onclick="openCreateWebhookModal('pk_live_51JXdef789ghi012')">Add Webhook</button>
                                 <button class="btn-action btn-delete" onclick="deleteKey('key2')">Delete</button>
                             </div>
                         </td>
@@ -993,6 +1209,479 @@
             </div>
         </div>
     </main>
+
+    <!-- Webhooks Content -->
+    <main class="main-content" id="webhooksContent" style="display: none;">
+        <div class="page-header">
+            <h1>Webhooks</h1>
+            <p>Manage webhook endpoints for real-time event notifications</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-number">3</div>
+                <div class="card-label">Active Webhooks</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">127</div>
+                <div class="card-label">Total Events</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">2</div>
+                <div class="card-label">Failed Deliveries</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-number">98.4%</div>
+                <div class="card-label">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search webhooks by URL or event...">
+            </div>
+            <button class="btn-primary" onclick="openCreateWebhookModal()">
+                <i class="fas fa-plus"></i>
+                Create Webhook
+            </button>
+        </div>
+
+        <!-- Webhooks Table -->
+        <div class="table-container">
+            <table class="api-keys-table">
+                <thead>
+                    <tr>
+                        <th>USER/ACCOUNT</th>
+                        <th>ENTITY TYPE</th>
+                        <th>CONTACT ENDPOINT</th>
+                        <th>ACTION ENDPOINT</th>
+                        <th>STATUS</th>
+                        <th>BATCH LIMIT</th>
+                        <th>LAST DELIVERY</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="user-account">
+                                <div class="user-name">John Smith</div>
+                                <div class="account-id">Account: homer-coaching-123</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="entity-type-badge">Account</span>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/contacts</div>
+                                <div class="method-badge">POST</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/actions</div>
+                                <div class="method-badge">POST</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge active">
+                                <i class="fas fa-circle"></i>
+                                Active
+                            </span>
+                        </td>
+                        <td>
+                            <span class="batch-limit">100</span>
+                        </td>
+                        <td>2 hours ago</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="editWebhook('webhook1')">Edit</button>
+                                <button class="btn-action btn-delete" onclick="deleteWebhook('webhook1')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-account">
+                                <div class="user-name">Sarah Johnson</div>
+                                <div class="account-id">Account: homer-coaching-456</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="entity-type-badge">Entity</span>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/contacts</div>
+                                <div class="method-badge">PUT</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/actions</div>
+                                <div class="method-badge">PUT</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge active">
+                                <i class="fas fa-circle"></i>
+                                Active
+                            </span>
+                        </td>
+                        <td>
+                            <span class="batch-limit">50</span>
+                        </td>
+                        <td>1 day ago</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="editWebhook('webhook2')">Edit</button>
+                                <button class="btn-action btn-delete" onclick="deleteWebhook('webhook2')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-account">
+                                <div class="user-name">Mike Chen</div>
+                                <div class="account-id">Account: homer-coaching-789</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="entity-type-badge">User</span>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/contacts</div>
+                                <div class="method-badge">PATCH</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="endpoint-url">
+                                <div class="url-text">https://api.homercoaching.com/webhooks/actions</div>
+                                <div class="method-badge">PATCH</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge inactive">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Failed
+                            </span>
+                        </td>
+                        <td>
+                            <span class="batch-limit">200</span>
+                        </td>
+                        <td>3 days ago</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action" onclick="editWebhook('webhook3')">Edit</button>
+                                <button class="btn-action btn-delete" onclick="deleteWebhook('webhook3')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing 1-3 of 3 webhooks
+            </div>
+            <div class="pagination-controls">
+                <button class="btn-pagination" disabled>Previous</button>
+                <button class="btn-pagination active">1</button>
+                <button class="btn-pagination" disabled>Next</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Webhook Modal -->
+    <div id="editWebhookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Webhook</h2>
+                <button class="modal-close" onclick="closeEditWebhookModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="editWebhookForm">
+                <!-- API Key Input -->
+                <div class="form-group">
+                    <label for="editApiKey">API Key*</label>
+                    <input type="text" id="editApiKey" name="editApiKey" placeholder="Enter your API key" required>
+                    <div class="error-message" id="editApiKeyError">API key is required</div>
+                    <small>Use your existing API key to authenticate this webhook update</small>
+                </div>
+
+                <!-- Entity Type Selection -->
+                <div class="form-group">
+                    <label>Entity Type*</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="editEntityType" value="account" checked>
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Account</strong>
+                                <small>Webhook for entire account</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="editEntityType" value="entity">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Entity</strong>
+                                <small>Webhook for specific entity</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="editEntityType" value="user">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>User</strong>
+                                <small>Webhook for specific user</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Scope ID (conditional) -->
+                <div class="form-group" id="editScopeIdGroup" style="display: none;">
+                    <label for="editScopeId">Scope ID*</label>
+                    <input type="text" id="editScopeId" name="editScopeId" placeholder="Enter entity ID for entity or user ID for user">
+                    <div class="error-message" id="editScopeIdError">Scope ID is required</div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="editWebhookStatus">Status</label>
+                    <select id="editWebhookStatus" name="editWebhookStatus">
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Contact Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="editContactDestination">Contact Destination URL*</label>
+                        <input type="url" id="editContactDestination" name="editContactDestination" placeholder="https://your-api.com/webhooks/contacts">
+                        <div class="error-message" id="editContactDestinationError">Contact destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editContactMethod">Contact Method</label>
+                        <select id="editContactMethod" name="editContactMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editContactHeaders">Contact Headers (JSON)</label>
+                        <textarea id="editContactHeaders" name="editContactHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editSourceInclusions">Source Inclusions (JSON)</label>
+                        <textarea id="editSourceInclusions" name="editSourceInclusions" placeholder='{"source": "website", "type": "lead"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Contact Action Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Action Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="editActionDestination">Action Destination URL*</label>
+                        <input type="url" id="editActionDestination" name="editActionDestination" placeholder="https://your-api.com/webhooks/actions">
+                        <div class="error-message" id="editActionDestinationError">Action destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editActionMethod">Action Method</label>
+                        <select id="editActionMethod" name="editActionMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editActionHeaders">Action Headers (JSON)</label>
+                        <textarea id="editActionHeaders" name="editActionHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editActionTypeInclusions">Action Type Inclusions (JSON)</label>
+                        <textarea id="editActionTypeInclusions" name="editActionTypeInclusions" placeholder='{"action_type": "email_sent", "status": "completed"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Batch Limit -->
+                <div class="form-group">
+                    <label for="editBatchLimit">Batch Limit</label>
+                    <input type="number" id="editBatchLimit" name="editBatchLimit" value="100" min="1" max="1000">
+                    <small>Maximum number of events to batch together</small>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeEditWebhookModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Webhook</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Webhook Modal -->
+    <div id="createWebhookModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Webhook</h2>
+                <button class="modal-close" onclick="closeCreateWebhookModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="createWebhookForm">
+                <!-- API Key Input -->
+                <div class="form-group">
+                    <label for="apiKey">API Key*</label>
+                    <input type="text" id="apiKey" name="apiKey" placeholder="Enter your API key" required>
+                    <div class="error-message" id="apiKeyError">API key is required</div>
+                    <small>Use your existing API key to authenticate this webhook creation</small>
+                </div>
+
+                <!-- Entity Type Selection -->
+                <div class="form-group">
+                    <label>Entity Type*</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="account" checked>
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Account</strong>
+                                <small>Webhook for entire account</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="entity">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>Entity</strong>
+                                <small>Webhook for specific entity</small>
+                            </div>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="entityType" value="user">
+                            <div class="radio-custom"></div>
+                            <div class="radio-content">
+                                <strong>User</strong>
+                                <small>Webhook for specific user</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Scope ID (conditional) -->
+                <div class="form-group" id="scopeIdGroup" style="display: none;">
+                    <label for="scopeId">Scope ID*</label>
+                    <input type="text" id="scopeId" name="scopeId" placeholder="Enter entity ID for entity or user ID for user">
+                    <div class="error-message" id="scopeIdError">Scope ID is required</div>
+                </div>
+
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="webhookStatus">Status</label>
+                    <select id="webhookStatus" name="webhookStatus">
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Contact Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="contactDestination">Contact Destination URL*</label>
+                        <input type="url" id="contactDestination" name="contactDestination" placeholder="https://your-api.com/webhooks/contacts">
+                        <div class="error-message" id="contactDestinationError">Contact destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMethod">Contact Method</label>
+                        <select id="contactMethod" name="contactMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactHeaders">Contact Headers (JSON)</label>
+                        <textarea id="contactHeaders" name="contactHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sourceInclusions">Source Inclusions (JSON)</label>
+                        <textarea id="sourceInclusions" name="sourceInclusions" placeholder='{"source": "website", "type": "lead"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Contact Action Webhooks Section -->
+                <div class="webhook-section">
+                    <h3>Contact Action Webhooks</h3>
+                    
+                    <div class="form-group">
+                        <label for="actionDestination">Action Destination URL*</label>
+                        <input type="url" id="actionDestination" name="actionDestination" placeholder="https://your-api.com/webhooks/actions">
+                        <div class="error-message" id="actionDestinationError">Action destination URL is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="actionMethod">Action Method</label>
+                        <select id="actionMethod" name="actionMethod">
+                            <option value="POST" selected>POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="actionHeaders">Action Headers (JSON)</label>
+                        <textarea id="actionHeaders" name="actionHeaders" placeholder='{"Authorization": "Bearer token", "Content-Type": "application/json"}' rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="actionTypeInclusions">Action Type Inclusions (JSON)</label>
+                        <textarea id="actionTypeInclusions" name="actionTypeInclusions" placeholder='{"action_type": "email_sent", "status": "completed"}' rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Batch Limit -->
+                <div class="form-group">
+                    <label for="batchLimit">Batch Limit</label>
+                    <input type="number" id="batchLimit" name="batchLimit" value="100" min="1" max="1000">
+                    <small>Maximum number of events to batch together</small>
+                </div>
+
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateWebhookModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Webhook</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Create Key Modal -->
     <div id="createKeyModal" class="modal">
@@ -1387,19 +2076,34 @@
         function showApiKeys() {
             document.querySelector('.main-content').style.display = 'block';
             document.getElementById('usersContent').style.display = 'none';
+            document.getElementById('webhooksContent').style.display = 'none';
             
             // Update navigation active state
             document.querySelector('li[onclick="showApiKeys()"]').classList.add('active');
             document.querySelector('li[onclick="showUsers()"]').classList.remove('active');
+            document.querySelector('li[onclick="showWebhooks()"]').classList.remove('active');
         }
 
         function showUsers() {
             document.querySelector('.main-content').style.display = 'none';
             document.getElementById('usersContent').style.display = 'block';
+            document.getElementById('webhooksContent').style.display = 'none';
             
             // Update navigation active state
             document.querySelector('li[onclick="showUsers()"]').classList.add('active');
             document.querySelector('li[onclick="showApiKeys()"]').classList.remove('active');
+            document.querySelector('li[onclick="showWebhooks()"]').classList.remove('active');
+        }
+
+        function showWebhooks() {
+            document.querySelector('.main-content').style.display = 'none';
+            document.getElementById('usersContent').style.display = 'none';
+            document.getElementById('webhooksContent').style.display = 'block';
+            
+            // Update navigation active state
+            document.querySelector('li[onclick="showWebhooks()"]').classList.add('active');
+            document.querySelector('li[onclick="showApiKeys()"]').classList.remove('active');
+            document.querySelector('li[onclick="showUsers()"]').classList.remove('active');
         }
 
         // User management functions
@@ -1431,6 +2135,295 @@
 
         function closeDeleteUserModal() {
             document.getElementById('deleteUserModal').style.display = 'none';
+        }
+
+        // Webhook management functions
+        function openCreateWebhookModal(apiKey) {
+            document.getElementById('createWebhookModal').style.display = 'flex';
+            
+            // Pre-fill the API key if provided
+            if (apiKey) {
+                const apiKeyInput = document.getElementById('apiKey');
+                if (apiKeyInput) {
+                    apiKeyInput.value = apiKey;
+                }
+            }
+        }
+
+        function closeCreateWebhookModal() {
+            document.getElementById('createWebhookModal').style.display = 'none';
+            resetWebhookForm();
+        }
+
+        function resetWebhookForm() {
+            document.getElementById('createWebhookForm').reset();
+            clearWebhookErrors();
+            // Reset entity type to account
+            document.querySelector('input[name="entityType"][value="account"]').checked = true;
+            // Hide scope ID group
+            document.getElementById('scopeIdGroup').style.display = 'none';
+        }
+
+        function clearWebhookErrors() {
+            const errorElements = document.querySelectorAll('#createWebhookForm .error-message');
+            errorElements.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
+
+        function editWebhook(webhookId) {
+            document.getElementById('editWebhookModal').style.display = 'flex';
+            
+            // Pre-fill form with existing webhook data
+            populateEditForm(webhookId);
+        }
+
+        function closeEditWebhookModal() {
+            document.getElementById('editWebhookModal').style.display = 'none';
+            resetEditWebhookForm();
+        }
+
+        function resetEditWebhookForm() {
+            document.getElementById('editWebhookForm').reset();
+            clearEditWebhookErrors();
+            // Reset entity type to account
+            document.querySelector('input[name="editEntityType"][value="account"]').checked = true;
+            // Hide scope ID group
+            document.getElementById('editScopeIdGroup').style.display = 'none';
+        }
+
+        function clearEditWebhookErrors() {
+            const errorElements = document.querySelectorAll('#editWebhookForm .error-message');
+            errorElements.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
+        function populateEditForm(webhookId) {
+            // This would typically fetch data from your backend
+            // For now, we'll populate with sample data based on webhookId
+            const sampleData = {
+                'webhook1': {
+                    apiKey: 'pk_live_51JXabc123def456',
+                    entityType: 'account',
+                    scopeId: '',
+                    status: 'active',
+                    contactDestination: 'https://api.homercoaching.com/webhooks/contacts',
+                    contactMethod: 'POST',
+                    contactHeaders: '{"Authorization": "Bearer token"}',
+                    sourceInclusions: '{"source": "website"}',
+                    actionDestination: 'https://api.homercoaching.com/webhooks/actions',
+                    actionMethod: 'POST',
+                    actionHeaders: '{"Authorization": "Bearer token"}',
+                    actionTypeInclusions: '{"action_type": "email_sent"}',
+                    batchLimit: '100'
+                },
+                'webhook2': {
+                    apiKey: 'pk_live_51JXdef789ghi012',
+                    entityType: 'entity',
+                    scopeId: 'entity-123',
+                    status: 'active',
+                    contactDestination: 'https://api.homercoaching.com/webhooks/contacts',
+                    contactMethod: 'PUT',
+                    contactHeaders: '{"Authorization": "Bearer token"}',
+                    sourceInclusions: '{"source": "mobile"}',
+                    actionDestination: 'https://api.homercoaching.com/webhooks/actions',
+                    actionMethod: 'PUT',
+                    actionHeaders: '{"Authorization": "Bearer token"}',
+                    actionTypeInclusions: '{"action_type": "sms_sent"}',
+                    batchLimit: '50'
+                },
+                'webhook3': {
+                    apiKey: 'pk_live_51JXghi345jkl678',
+                    entityType: 'user',
+                    scopeId: 'user-456',
+                    status: 'inactive',
+                    contactDestination: 'https://api.homercoaching.com/webhooks/contacts',
+                    contactMethod: 'PATCH',
+                    contactHeaders: '{"Authorization": "Bearer token"}',
+                    sourceInclusions: '{"source": "api"}',
+                    actionDestination: 'https://api.homercoaching.com/webhooks/actions',
+                    actionMethod: 'PATCH',
+                    actionHeaders: '{"Authorization": "Bearer token"}',
+                    actionTypeInclusions: '{"action_type": "call_made"}',
+                    batchLimit: '200'
+                }
+            };
+
+            const data = sampleData[webhookId] || sampleData['webhook1'];
+            
+            // Populate form fields
+            document.getElementById('editApiKey').value = data.apiKey;
+            document.querySelector(`input[name="editEntityType"][value="${data.entityType}"]`).checked = true;
+            document.getElementById('editScopeId').value = data.scopeId;
+            document.getElementById('editWebhookStatus').value = data.status;
+            document.getElementById('editContactDestination').value = data.contactDestination;
+            document.getElementById('editContactMethod').value = data.contactMethod;
+            document.getElementById('editContactHeaders').value = data.contactHeaders;
+            document.getElementById('editSourceInclusions').value = data.sourceInclusions;
+            document.getElementById('editActionDestination').value = data.actionDestination;
+            document.getElementById('editActionMethod').value = data.actionMethod;
+            document.getElementById('editActionHeaders').value = data.actionHeaders;
+            document.getElementById('editActionTypeInclusions').value = data.actionTypeInclusions;
+            document.getElementById('editBatchLimit').value = data.batchLimit;
+
+            // Show/hide scope ID based on entity type
+            handleEditEntityTypeChange();
+        }
+
+        function handleEditEntityTypeChange() {
+            const entityType = document.querySelector('input[name="editEntityType"]:checked').value;
+            const scopeIdGroup = document.getElementById('editScopeIdGroup');
+            
+            if (entityType === 'account') {
+                scopeIdGroup.style.display = 'none';
+            } else {
+                scopeIdGroup.style.display = 'block';
+            }
+        }
+
+        function handleEditWebhookSubmission(e) {
+            e.preventDefault();
+            clearEditWebhookErrors();
+            
+            const formData = new FormData(e.target);
+            const webhookData = {
+                apiKey: formData.get('editApiKey'),
+                entityType: formData.get('editEntityType'),
+                scopeId: formData.get('editScopeId'),
+                status: formData.get('editWebhookStatus'),
+                contactDestination: formData.get('editContactDestination'),
+                contactMethod: formData.get('editContactMethod'),
+                contactHeaders: formData.get('editContactHeaders'),
+                sourceInclusions: formData.get('editSourceInclusions'),
+                actionDestination: formData.get('editActionDestination'),
+                actionMethod: formData.get('editActionMethod'),
+                actionHeaders: formData.get('editActionHeaders'),
+                actionTypeInclusions: formData.get('editActionTypeInclusions'),
+                batchLimit: formData.get('editBatchLimit')
+            };
+            
+            let hasErrors = false;
+            
+            // Validate required fields
+            if (!webhookData.apiKey) {
+                showEditError('editApiKeyError');
+                hasErrors = true;
+            }
+            
+            if (webhookData.entityType !== 'account' && !webhookData.scopeId) {
+                showEditError('editScopeIdError');
+                hasErrors = true;
+            }
+            
+            if (!webhookData.contactDestination) {
+                showEditError('editContactDestinationError');
+                hasErrors = true;
+            }
+            
+            if (!webhookData.actionDestination) {
+                showEditError('editActionDestinationError');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                // Handle successful submission
+                console.log('Updated webhook data:', webhookData);
+                showToast('success', 'Webhook Updated', 'Webhook has been updated successfully!', 4000);
+                closeEditWebhookModal();
+                
+                // Here you would typically send the data to your backend API
+                // Example: updateWebhook(webhookData);
+            }
+        }
+
+        function showEditError(errorId) {
+            const errorElement = document.getElementById(errorId);
+            if (errorElement) {
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function deleteWebhook(webhookId) {
+            if (confirm('Are you sure you want to delete this webhook? This action cannot be undone.')) {
+                showToast('success', 'Webhook Deleted', `Webhook ${webhookId} has been deleted successfully`, 3000);
+            }
+        }
+
+        // Handle entity type changes
+        function handleEntityTypeChange() {
+            const entityType = document.querySelector('input[name="entityType"]:checked').value;
+            const scopeIdGroup = document.getElementById('scopeIdGroup');
+            
+            if (entityType === 'account') {
+                scopeIdGroup.style.display = 'none';
+            } else {
+                scopeIdGroup.style.display = 'block';
+            }
+        }
+
+        // Handle webhook form submission
+        function handleWebhookSubmission(e) {
+            e.preventDefault();
+            clearWebhookErrors();
+            
+            const formData = new FormData(e.target);
+            const webhookData = {
+                apiKey: formData.get('apiKey'),
+                entityType: formData.get('entityType'),
+                scopeId: formData.get('scopeId'),
+                status: formData.get('webhookStatus'),
+                contactDestination: formData.get('contactDestination'),
+                contactMethod: formData.get('contactMethod'),
+                contactHeaders: formData.get('contactHeaders'),
+                sourceInclusions: formData.get('sourceInclusions'),
+                actionDestination: formData.get('actionDestination'),
+                actionMethod: formData.get('actionMethod'),
+                actionHeaders: formData.get('actionHeaders'),
+                actionTypeInclusions: formData.get('actionTypeInclusions'),
+                batchLimit: formData.get('batchLimit')
+            };
+            
+            let hasErrors = false;
+            
+            // Validate required fields
+            if (!webhookData.apiKey) {
+                showError('apiKeyError');
+                hasErrors = true;
+            }
+            
+            if (webhookData.entityType !== 'account' && !webhookData.scopeId) {
+                showError('scopeIdError');
+                hasErrors = true;
+            }
+            
+            if (!webhookData.contactDestination) {
+                showError('contactDestinationError');
+                hasErrors = true;
+            }
+            
+            if (!webhookData.actionDestination) {
+                showError('actionDestinationError');
+                hasErrors = true;
+            }
+            
+            if (!hasErrors) {
+                // Handle successful submission
+                console.log('Webhook data:', webhookData);
+                showToast('success', 'Webhook Created', 'Webhook has been created successfully!', 4000);
+                closeCreateWebhookModal();
+                
+                // Here you would typically send the data to your backend API
+                // Example: createWebhook(webhookData);
+            }
+        }
+
+        function showError(errorId) {
+            const errorElement = document.getElementById(errorId);
+            if (errorElement) {
+                errorElement.style.display = 'block';
+            }
         }
 
         // Create key functionality
@@ -1566,9 +2559,35 @@
                             closeRefreshKeyModal();
                         } else if (modal.id === 'createKeyModal') {
                             closeCreateKeyModal();
+                        } else if (modal.id === 'createWebhookModal') {
+                            closeCreateWebhookModal();
                         }
                     }
                 });
+            });
+
+            // Handle webhook form submission
+            const webhookForm = document.getElementById('createWebhookForm');
+            if (webhookForm) {
+                webhookForm.addEventListener('submit', handleWebhookSubmission);
+            }
+
+            // Handle edit webhook form submission
+            const editWebhookForm = document.getElementById('editWebhookForm');
+            if (editWebhookForm) {
+                editWebhookForm.addEventListener('submit', handleEditWebhookSubmission);
+            }
+
+            // Handle entity type changes
+            const entityTypeInputs = document.querySelectorAll('input[name="entityType"]');
+            entityTypeInputs.forEach(input => {
+                input.addEventListener('change', handleEntityTypeChange);
+            });
+
+            // Handle entity type changes for edit webhook form
+            const editEntityTypeInputs = document.querySelectorAll('input[name="editEntityType"]');
+            editEntityTypeInputs.forEach(input => {
+                input.addEventListener('change', handleEditEntityTypeChange);
             });
 
             // Close modals on escape key
@@ -1578,6 +2597,8 @@
                     closeDeleteKeyModal();
                     closeRefreshKeyModal();
                     closeCreateKeyModal();
+                    closeCreateWebhookModal();
+                    closeEditWebhookModal();
                 }
             });
         });

@@ -1,5 +1,134 @@
 
 
+// Webhook modal functionality
+function openCreateWebhookModal(apiKey) {
+    const modal = document.getElementById('createWebhookModal');
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        // Pre-fill the API key if provided
+        if (apiKey) {
+            const apiKeyInput = document.getElementById('apiKey');
+            if (apiKeyInput) {
+                apiKeyInput.value = apiKey;
+            }
+        }
+    }
+}
+
+function closeCreateWebhookModal() {
+    const modal = document.getElementById('createWebhookModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    resetWebhookForm();
+}
+
+function resetWebhookForm() {
+    const form = document.getElementById('createWebhookForm');
+    if (form) {
+        form.reset();
+        clearWebhookErrors();
+        // Reset entity type to account
+        const accountRadio = document.querySelector('input[name="entityType"][value="account"]');
+        if (accountRadio) {
+            accountRadio.checked = true;
+        }
+        // Hide scope ID group
+        const scopeIdGroup = document.getElementById('scopeIdGroup');
+        if (scopeIdGroup) {
+            scopeIdGroup.style.display = 'none';
+        }
+    }
+}
+
+function clearWebhookErrors() {
+    const errorElements = document.querySelectorAll('#createWebhookForm .error-message');
+    errorElements.forEach(error => {
+        error.style.display = 'none';
+    });
+}
+
+function handleEntityTypeChange() {
+    const entityType = document.querySelector('input[name="entityType"]:checked');
+    const scopeIdGroup = document.getElementById('scopeIdGroup');
+    
+    if (entityType && scopeIdGroup) {
+        if (entityType.value === 'account') {
+            scopeIdGroup.style.display = 'none';
+        } else {
+            scopeIdGroup.style.display = 'block';
+        }
+    }
+}
+
+function handleWebhookSubmission(e) {
+    e.preventDefault();
+    clearWebhookErrors();
+    
+    const formData = new FormData(e.target);
+    const webhookData = {
+        apiKey: formData.get('apiKey'),
+        entityType: formData.get('entityType'),
+        scopeId: formData.get('scopeId'),
+        vendor: formData.get('webhookVendor'),
+        status: formData.get('webhookStatus'),
+        contactDestination: formData.get('contactDestination'),
+        contactMethod: formData.get('contactMethod'),
+        contactHeaders: formData.get('contactHeaders'),
+        actionDestination: formData.get('actionDestination'),
+        actionMethod: formData.get('actionMethod'),
+        actionHeaders: formData.get('actionHeaders'),
+        batchLimit: formData.get('batchLimit'),
+        inclusions: formData.get('inclusions')
+    };
+    
+    let hasErrors = false;
+    
+    // Validate required fields
+    if (!webhookData.apiKey) {
+        showWebhookError('apiKeyError');
+        hasErrors = true;
+    }
+    
+    if (!webhookData.vendor) {
+        showWebhookError('webhookVendorError');
+        hasErrors = true;
+    }
+    
+    if (webhookData.entityType !== 'account' && !webhookData.scopeId) {
+        showWebhookError('scopeIdError');
+        hasErrors = true;
+    }
+    
+    if (!webhookData.contactDestination) {
+        showWebhookError('contactDestinationError');
+        hasErrors = true;
+    }
+    
+    if (!webhookData.actionDestination) {
+        showWebhookError('actionDestinationError');
+        hasErrors = true;
+    }
+    
+    if (!hasErrors) {
+        // Handle successful submission
+        console.log('Webhook data:', webhookData);
+        showToast('success', 'Webhook Created', 'Webhook has been created successfully!', 4000);
+        closeCreateWebhookModal();
+        
+        // Here you would typically send the data to your backend API
+        // Example: createWebhook(webhookData);
+    }
+}
+
+function showWebhookError(errorId) {
+    const errorElement = document.getElementById(errorId);
+    if (errorElement) {
+        errorElement.style.display = 'block';
+    }
+}
+
 // Modal functionality
 function openCreateKeyModal() {
     console.log('openCreateKeyModal called');
@@ -473,6 +602,28 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.addEventListener('click', function(e) {
             e.preventDefault();
             handleFormSubmission(e);
+        });
+    }
+
+    // Handle webhook form submission
+    const createWebhookForm = document.getElementById('createWebhookForm');
+    if (createWebhookForm) {
+        createWebhookForm.addEventListener('submit', handleWebhookSubmission);
+    }
+
+    // Handle entity type changes for webhook form
+    const entityTypeInputs = document.querySelectorAll('input[name="entityType"]');
+    entityTypeInputs.forEach(input => {
+        input.addEventListener('change', handleEntityTypeChange);
+    });
+
+    // Close webhook modal when clicking outside
+    const createWebhookModal = document.getElementById('createWebhookModal');
+    if (createWebhookModal) {
+        createWebhookModal.addEventListener('click', function(e) {
+            if (e.target === createWebhookModal) {
+                closeCreateWebhookModal();
+            }
         });
     }
     
